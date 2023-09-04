@@ -1,0 +1,10 @@
+{
+  "name": "todoapp",
+  "repository": "",
+  "author": "",
+  "license": "MIT",
+  "scripts": {
+    "server": "pnpm --prefix ./server/ start",
+    "client": "pnpm --prefix ./client/ start"
+  }
+}
