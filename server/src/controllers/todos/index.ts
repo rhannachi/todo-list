@@ -21,11 +21,10 @@ const addTodo = async (req: Request, res: Response): Promise<void> => {
       })
   
       const newTodo: ITodo = await todo.save()
-      const allTodos: ITodo[] = await Todo.find()
-  
+
       res
-        .status(201)
-        .json({ message: "Todo added", todo: newTodo, todos: allTodos })
+        .status(200)
+        .json({ message: "Todo added", todo: newTodo })
     } catch (error) {
       throw error
     }
@@ -37,15 +36,11 @@ const updateTodo = async (req: Request, res: Response): Promise<void> => {
         params: { id },
         body,
       } = req
-      const updateTodo: ITodo | null = await Todo.findByIdAndUpdate(
-        { _id: id },
-        body
-      )
-      const allTodos: ITodo[] = await Todo.find()
+      await Todo.updateOne({ _id: id }, body)
+      const todoUpdated: ITodo | null = await Todo.findById(id)
       res.status(200).json({
         message: "Todo updated",
-        todo: updateTodo,
-        todos: allTodos,
+        todo: todoUpdated,
       })
     } catch (error) {
       throw error
@@ -57,11 +52,9 @@ const deleteTodo = async (req: Request, res: Response): Promise<void> => {
     const deletedTodo: ITodo | null = await Todo.findByIdAndRemove(
       req.params.id
     )
-    const allTodos: ITodo[] = await Todo.find()
     res.status(200).json({
       message: "Todo deleted",
       todo: deletedTodo,
-      todos: allTodos,
     })
   } catch (error) {
     throw error
