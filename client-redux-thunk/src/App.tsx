@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 
 import {useAppDispatch, useAppSelector} from "./store";
-import {fetchTodosThunk, addTodoApi, todosSelector, updateTodoApi, deleteTodoApi} from "./store/todos";
+import {fetchTodosThunk, addTodoThunk, todosSelector, updateTodoThunk, deleteTodoThunk} from "./store/todos";
 import {AddTodo, TodoItem} from "./components";
 
 const App: React.FC = () => {
@@ -14,21 +14,21 @@ const App: React.FC = () => {
 
  const handleSaveTodo = (e: React.FormEvent, todo: TodoType): void => {
       e.preventDefault()
-     dispatch(addTodoApi({
+     dispatch(addTodoThunk({
          ...todo,
          status: false
      }))
 }
 
   const handleUpdateTodo = (todo: TodoType): void => {
-      dispatch(updateTodoApi({
+      dispatch(updateTodoThunk({
           _id: todo._id,
           status: true
       }))
   }
 
   const handleDeleteTodo = (_id: string): void => {
-      dispatch(deleteTodoApi({
+      dispatch(deleteTodoThunk({
           _id,
       }))
   }

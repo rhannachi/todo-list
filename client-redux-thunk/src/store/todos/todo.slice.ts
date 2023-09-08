@@ -1,5 +1,5 @@
 import {createSlice} from "@reduxjs/toolkit";
-import {addTodoApi, deleteTodoApi, fetchTodosThunk, updateTodoApi} from "./todo.thunk";
+import {addTodoThunk, deleteTodoThunk, fetchTodosThunk, updateTodoThunk} from "./todo.thunk";
 import {RootState} from "../index";
 
 type TodosState = {
@@ -55,21 +55,21 @@ export const todosSlice = createSlice({
                 }
             });
         /** AddTodoApi **/
-        builder.addCase(addTodoApi.pending,(state) => {
+        builder.addCase(addTodoThunk.pending,(state) => {
             return {
                 ...state,
                 status: 'loading',
                 error: undefined
             }
         });
-        builder.addCase(addTodoApi.fulfilled,(state, { payload }) => {
+        builder.addCase(addTodoThunk.fulfilled,(state, { payload }) => {
             return {
                 ...state,
                 status:"finished",
                 list: [...state.list, payload]
             }
         });
-        builder.addCase(addTodoApi.rejected,(state, { payload }) => {
+        builder.addCase(addTodoThunk.rejected,(state, { payload }) => {
             let newState = {...state}
             if (payload) {
                 newState = {
@@ -83,14 +83,14 @@ export const todosSlice = createSlice({
             }
         });
         /** UpdateTodoApi **/
-        builder.addCase(updateTodoApi.pending,(state) => {
+        builder.addCase(updateTodoThunk.pending,(state) => {
             return {
                 ...state,
                 status: 'loading',
                 error: undefined
             }
         });
-        builder.addCase(updateTodoApi.fulfilled,(state, { payload }) => {
+        builder.addCase(updateTodoThunk.fulfilled,(state, { payload }) => {
             return {
                 ...state,
                 status:"finished",
@@ -102,7 +102,7 @@ export const todosSlice = createSlice({
                 })
             }
         });
-        builder.addCase(updateTodoApi.rejected,(state, { payload }) => {
+        builder.addCase(updateTodoThunk.rejected,(state, { payload }) => {
             let newState = {...state}
             if (payload) {
                 newState = {
@@ -116,21 +116,21 @@ export const todosSlice = createSlice({
             }
         });
         /** DeleteTodoApi **/
-        builder.addCase(deleteTodoApi.pending,(state) => {
+        builder.addCase(deleteTodoThunk.pending,(state) => {
             return {
                 ...state,
                 status: 'loading',
                 error: undefined
             }
         });
-        builder.addCase(deleteTodoApi.fulfilled,(state, { payload }) => {
+        builder.addCase(deleteTodoThunk.fulfilled,(state, { payload }) => {
             return {
                 ...state,
                 status:"finished",
                 list: state.list.filter((todo) => payload._id !== todo._id)
             }
         });
-        builder.addCase(deleteTodoApi.rejected,(state, { payload }) => {
+        builder.addCase(deleteTodoThunk.rejected,(state, { payload }) => {
             let newState = {...state}
             if (payload) {
                 newState = {
