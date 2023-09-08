@@ -24,7 +24,7 @@ const addTodo = async (req: Request, res: Response): Promise<void> => {
 
       res
         .status(200)
-        .json({ message: "Todo added", todo: newTodo })
+        .json({ todo: newTodo })
     } catch (error) {
       throw error
     }
@@ -39,7 +39,6 @@ const updateTodo = async (req: Request, res: Response): Promise<void> => {
       await Todo.updateOne({ _id: id }, body)
       const todoUpdated: ITodo | null = await Todo.findById(id)
       res.status(200).json({
-        message: "Todo updated",
         todo: todoUpdated,
       })
     } catch (error) {
@@ -53,7 +52,6 @@ const deleteTodo = async (req: Request, res: Response): Promise<void> => {
       req.params.id
     )
     res.status(200).json({
-      message: "Todo deleted",
       todo: deletedTodo,
     })
   } catch (error) {

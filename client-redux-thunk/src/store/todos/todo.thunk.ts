@@ -21,7 +21,7 @@ export const fetchTodosThunk = createAsyncThunk<TodoType[], undefined, RejectTyp
                 message: response.message
             });
         }
-        return response
+        return response.todos
     }
 );
 
@@ -42,7 +42,7 @@ export const addTodoThunk = createAsyncThunk<TodoType, AddTodoThunkPayloadType, 
                 message: response.message
             });
         }
-        return response
+        return response.todo
     }
 );
 
@@ -60,7 +60,7 @@ export const updateTodoThunk = createAsyncThunk<TodoType, UpdateTodoThunkPayload
                 message: response.message
             });
         }
-        return response
+        return response.todo
     }
 );
 
@@ -78,6 +78,6 @@ export const deleteTodoThunk = createAsyncThunk<Pick<TodoType, '_id'>, DeleteTod
                 message: response.message
             });
         }
-        return {_id: response._id}
+        return {_id: response.todo._id}
     }
 );

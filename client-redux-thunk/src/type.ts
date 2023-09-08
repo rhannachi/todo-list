@@ -7,9 +7,4 @@ type TodoType = {
   updatedAt?: string
 }
 
-type ApiDataType = {
-  message: string
-  status: string
-  todos: TodoType[]
-  todo?: TodoType
-}
+type TodoApiType = TodoType
