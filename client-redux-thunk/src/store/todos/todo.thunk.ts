@@ -1,5 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios, {AxiosResponse} from "axios";
+import {fetchTodosApi} from "./todo.service";
 
 const baseUrl = 'http://localhost:4000' as const
 
@@ -15,17 +16,17 @@ type RejectType = {
  * FetchTodos API
  */
 
-export const fetchTodosApi = createAsyncThunk<ITodo[], undefined, RejectType>(
+export const fetchTodosThunk = createAsyncThunk<TodoType[], undefined, RejectType>(
     "todos/fetch",
     async (undefined, thunkApi) => {
-        const response: AxiosResponse<ApiDataType> = await axios.get(baseUrl + '/todos')
+        const response = await fetchTodosApi()
 
-        if (response.status !== 200 || !response.data) {
+        if (response instanceof Error) {
             return thunkApi.rejectWithValue({
-                message: "Failed to fetch todos."
+                message: response.message
             });
         }
-        return response.data.todos;
+        return response
     }
 );
 
@@ -33,10 +34,10 @@ export const fetchTodosApi = createAsyncThunk<ITodo[], undefined, RejectType>(
  * AddTodo API
  */
 
-type AddTodoApiPayloadType = Pick<ITodo, 'name' | 'description'> & {
+type AddTodoApiPayloadType = Pick<TodoType, 'name' | 'description'> & {
     status: false
 }
-export const addTodoApi = createAsyncThunk<ITodo, AddTodoApiPayloadType, RejectType>(
+export const addTodoApi = createAsyncThunk<TodoType, AddTodoApiPayloadType, RejectType>(
     "todos/add",
     async (todo, thunkApi) => {
         const response: AxiosResponse<ApiDataType> = await axios.post(baseUrl + '/add-todo', todo)
@@ -53,8 +54,8 @@ export const addTodoApi = createAsyncThunk<ITodo, AddTodoApiPayloadType, RejectT
 /**
  * UpdateTodo API
  */
-type UpdateTodoApiPayloadType = Partial<Pick<ITodo, 'name' | 'description' | 'status'>> & Pick<ITodo, '_id'>
-export const updateTodoApi = createAsyncThunk<ITodo, UpdateTodoApiPayloadType, RejectType>(
+type UpdateTodoApiPayloadType = Partial<Pick<TodoType, 'name' | 'description' | 'status'>> & Pick<TodoType, '_id'>
+export const updateTodoApi = createAsyncThunk<TodoType, UpdateTodoApiPayloadType, RejectType>(
     "todos/update",
     async (todo, thunkApi) => {
         const response: AxiosResponse<ApiDataType> = await axios.put(`${baseUrl}/edit-todo/${todo._id}`, todo)
@@ -71,8 +72,8 @@ export const updateTodoApi = createAsyncThunk<ITodo, UpdateTodoApiPayloadType, R
 /**
  * DeleteTodo API
  */
-type DeleteTodoApiPayloadType = Pick<ITodo, '_id'>
-export const deleteTodoApi = createAsyncThunk<Pick<ITodo, '_id'>, DeleteTodoApiPayloadType, RejectType>(
+type DeleteTodoApiPayloadType = Pick<TodoType, '_id'>
+export const deleteTodoApi = createAsyncThunk<Pick<TodoType, '_id'>, DeleteTodoApiPayloadType, RejectType>(
     "todos/delete",
     async (todo, thunkApi) => {
         const response: AxiosResponse<ApiDataType> = await axios.delete(`${baseUrl}/delete-todo/${todo._id}`)

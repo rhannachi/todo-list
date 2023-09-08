@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 
 type AddTodoProps = {
-  saveTodo: (e: React.FormEvent, formData: ITodo | any) => void 
+  saveTodo: (e: React.FormEvent, formData: TodoType | any) => void
 }
 
 export const AddTodo: React.FC<AddTodoProps> = ({ saveTodo }) => {
-  const [formData, setFormData] = useState<ITodo | {}>()
+  const [formData, setFormData] = useState<TodoType | {}>()
 
   const handleForm = (e: React.FormEvent<HTMLInputElement>): void => {
     setFormData({

@@ -1,11 +1,11 @@
 import {createSlice} from "@reduxjs/toolkit";
-import {addTodoApi, deleteTodoApi, fetchTodosApi, updateTodoApi} from "./todo.thunk";
+import {addTodoApi, deleteTodoApi, fetchTodosThunk, updateTodoApi} from "./todo.thunk";
 import {RootState} from "../index";
 
 type TodosState = {
     status: "loading" | "finished";
     error: string | undefined;
-    list: ITodo[];
+    list: TodoType[];
 };
 
 const initialState: TodosState = {
@@ -27,21 +27,21 @@ export const todosSlice = createSlice({
     },
     extraReducers: (builder) => {
         /** FetchTodo **/
-        builder.addCase(fetchTodosApi.pending,(state) => {
+        builder.addCase(fetchTodosThunk.pending,(state) => {
             return {
                 ...state,
                 status: 'loading',
                 error: undefined
             }
         });
-        builder.addCase(fetchTodosApi.fulfilled,(state, { payload }) => {
+        builder.addCase(fetchTodosThunk.fulfilled,(state, { payload }) => {
                 return {
                     ...state,
                     status:"finished",
                     list: payload
                 }
             });
-        builder.addCase(fetchTodosApi.rejected,(state, { payload }) => {
+        builder.addCase(fetchTodosThunk.rejected,(state, { payload }) => {
             let newState = {...state}
                 if (payload) {
                     newState = {

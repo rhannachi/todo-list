@@ -1,4 +1,4 @@
-type ITodo = {
+type TodoType = {
   _id: string
   name: string
   description: string
@@ -7,13 +7,9 @@ type ITodo = {
   updatedAt?: string
 }
 
-type TodoProps = {
-  todo: ITodo
-}
-
 type ApiDataType = {
   message: string
   status: string
-  todos: ITodo[]
-  todo?: ITodo
+  todos: TodoType[]
+  todo?: TodoType
 }

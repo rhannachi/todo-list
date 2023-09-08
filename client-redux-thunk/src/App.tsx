@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 
 import {useAppDispatch, useAppSelector} from "./store";
-import {fetchTodosApi, addTodoApi, todosSelector, updateTodoApi, deleteTodoApi} from "./store/todos";
+import {fetchTodosThunk, addTodoApi, todosSelector, updateTodoApi, deleteTodoApi} from "./store/todos";
 import {AddTodo, TodoItem} from "./components";
 
 const App: React.FC = () => {
@@ -9,10 +9,10 @@ const App: React.FC = () => {
     const dispatch = useAppDispatch();
 
   useEffect(() => {
-      dispatch(fetchTodosApi())
+      dispatch(fetchTodosThunk())
   }, [])
 
- const handleSaveTodo = (e: React.FormEvent, todo: ITodo): void => {
+ const handleSaveTodo = (e: React.FormEvent, todo: TodoType): void => {
       e.preventDefault()
      dispatch(addTodoApi({
          ...todo,
@@ -20,7 +20,7 @@ const App: React.FC = () => {
      }))
 }
 
-  const handleUpdateTodo = (todo: ITodo): void => {
+  const handleUpdateTodo = (todo: TodoType): void => {
       dispatch(updateTodoApi({
           _id: todo._id,
           status: true
@@ -37,7 +37,7 @@ const App: React.FC = () => {
     <main className='App'>
       <h1>To-do list</h1>
       <AddTodo saveTodo={handleSaveTodo} />
-      {todos.list.map((todo: ITodo) => (
+      {todos.list.map((todo: TodoType) => (
         <TodoItem
           key={todo._id}
           updateTodo={handleUpdateTodo}
