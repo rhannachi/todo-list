@@ -1,12 +1,12 @@
 import React from 'react'
 
-type Props = {
+type TodoItemProps = {
     todo: TodoType
     updateTodo: (todo: TodoType) => void
-    deleteTodo: (_id: string) => void
+    deleteTodo: (id: string) => void
 }
 
-export const TodoItem: React.FC<Props> = ({ todo, updateTodo, deleteTodo }) => {
+export const TodoItem: React.FC<TodoItemProps> = ({ todo, updateTodo, deleteTodo }) => {
   const checkTodo: string = todo.status ? `line-through` : ''
   return (
     <div className='Card'>
@@ -22,7 +22,7 @@ export const TodoItem: React.FC<Props> = ({ todo, updateTodo, deleteTodo }) => {
           Complete
         </button>
         <button
-          onClick={() => deleteTodo(todo._id)}
+          onClick={() => deleteTodo(todo.id)}
           className='Card--button__delete'
         >
           Delete

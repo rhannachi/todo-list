@@ -52,7 +52,7 @@ const deleteTodo = async (req: Request, res: Response): Promise<void> => {
       req.params.id
     )
     res.status(200).json({
-      todo: deletedTodo,
+      _id: deletedTodo?._id,
     })
   } catch (error) {
     throw error

@@ -95,7 +95,7 @@ export const todosSlice = createSlice({
                 ...state,
                 status:"finished",
                 list: state.list.map((todo) => {
-                    if (payload._id === todo._id) {
+                    if (payload.id === todo.id) {
                         return payload
                     }
                     return todo
@@ -127,7 +127,7 @@ export const todosSlice = createSlice({
             return {
                 ...state,
                 status:"finished",
-                list: state.list.filter((todo) => payload._id !== todo._id)
+                list: state.list.filter((todo) => payload.id !== todo.id)
             }
         });
         builder.addCase(deleteTodoThunk.rejected,(state, { payload }) => {

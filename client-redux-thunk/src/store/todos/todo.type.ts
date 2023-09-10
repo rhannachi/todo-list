@@ -1,4 +1,4 @@
-type TodoType = {
+type TodoApiType = {
   _id: string
   name: string
   description: string
@@ -7,4 +7,6 @@ type TodoType = {
   updatedAt?: string
 }
 
-type TodoApiType = TodoType
+type TodoType = Pick<TodoApiType, 'name' | 'description' | 'status'> & {
+  id: string
+}

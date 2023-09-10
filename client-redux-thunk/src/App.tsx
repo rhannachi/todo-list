@@ -22,14 +22,14 @@ const App: React.FC = () => {
 
   const handleUpdateTodo = (todo: TodoType): void => {
       dispatch(updateTodoThunk({
-          _id: todo._id,
+          id: todo.id,
           status: true
       }))
   }
 
-  const handleDeleteTodo = (_id: string): void => {
+  const handleDeleteTodo = (id: string): void => {
       dispatch(deleteTodoThunk({
-          _id,
+          id
       }))
   }
 
@@ -39,7 +39,7 @@ const App: React.FC = () => {
       <AddTodo saveTodo={handleSaveTodo} />
       {todos.list.map((todo: TodoType) => (
         <TodoItem
-          key={todo._id}
+          key={todo.id}
           updateTodo={handleUpdateTodo}
           deleteTodo={handleDeleteTodo}
           todo={todo}

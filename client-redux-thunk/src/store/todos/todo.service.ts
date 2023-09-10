@@ -8,7 +8,7 @@ type AddTodoApiResponseType = {
     todo: TodoApiType
 }
 type UpdateTodoApiResponseType = AddTodoApiResponseType
-type DeleteTodoApiResponseType = AddTodoApiResponseType
+type DeleteTodoApiResponseType = Pick<TodoApiType, '_id'>
 
 const handleErrorApi = (e: unknown, message: string): Error => {
     if (e instanceof Error) {
@@ -30,9 +30,7 @@ export const fetchTodosApi = async (): Promise<FetchTodosApiResponseType | Error
 }
 
 // TODO ....
-type AddTodoApiPayloadType = Pick<TodoType, 'name' | 'description'> & {
-    status: false
-}
+type AddTodoApiPayloadType = Pick<TodoApiType, 'name' | 'description' | 'status'>
 export const addTodoApi = async (todo: AddTodoApiPayloadType): Promise<AddTodoApiResponseType | Error> => {
     try{
         const response: AxiosResponse<AddTodoApiResponseType> = await axios.post(baseUrl + '/add-todo', todo)
@@ -45,8 +43,7 @@ export const addTodoApi = async (todo: AddTodoApiPayloadType): Promise<AddTodoAp
     }
 }
 
-// TODO ....
-type UpdateTodoApiPayloadType = Partial<Pick<TodoType, 'name' | 'description' | 'status'>> & Pick<TodoType, '_id'>
+type UpdateTodoApiPayloadType = Partial<Pick<TodoApiType, 'name' | 'description' | 'status'>> & Pick<TodoApiType, '_id'>
 export const updateTodoApi = async (todo: UpdateTodoApiPayloadType): Promise<UpdateTodoApiResponseType | Error> => {
     try{
         const response: AxiosResponse<UpdateTodoApiResponseType> = await axios.put(`${baseUrl}/edit-todo/${todo._id}`, todo)
@@ -59,8 +56,7 @@ export const updateTodoApi = async (todo: UpdateTodoApiPayloadType): Promise<Upd
     }
 }
 
-// TODO ....
-type DeleteTodoApiPayloadType = Pick<TodoType, '_id'>
+type DeleteTodoApiPayloadType = Pick<TodoApiType, '_id'>
 export const deleteTodoApi = async (todo: DeleteTodoApiPayloadType): Promise<DeleteTodoApiResponseType | Error> => {
     try{
         const response: AxiosResponse<DeleteTodoApiResponseType> = await axios.delete(`${baseUrl}/delete-todo/${todo._id}`)
