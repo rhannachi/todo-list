@@ -1,5 +1,6 @@
 import axios, {AxiosResponse} from "axios";
-const baseUrl = 'http://localhost:4000' as const
+const todoBaseUrl = 'http://localhost:4001' as const
+const infoBaseUrl = 'http://localhost:4003' as const
 
 const handleErrorApi = (e: unknown, message: string): Error => {
     if (e instanceof Error) {
@@ -15,7 +16,7 @@ type FetchTodosApiResponseType = {
 }
 export const fetchTodosApi = async (): Promise<FetchTodosApiResponseType | Error> => {
     try{
-        const response: AxiosResponse<FetchTodosApiResponseType> = await axios.get(baseUrl + '/todos')
+        const response: AxiosResponse<FetchTodosApiResponseType> = await axios.get(todoBaseUrl + '/todos')
         if (response.status !== 200 || !response.data) {
             throw Error('Failed to fetch todos')
         }
@@ -32,7 +33,7 @@ export type FetchInfoApiResponseType = {
 }
 export const fetchInfoApi = async (userId: string): Promise<FetchInfoApiResponseType | Error> => {
     try{
-        const response: AxiosResponse<FetchInfoApiResponseType> = await axios.get(`${baseUrl}/info-by-todo-id/${userId}`)
+        const response: AxiosResponse<FetchInfoApiResponseType> = await axios.get(`${infoBaseUrl}/info-by-todo-id/${userId}`)
         if (response.status !== 200 || !response.data) {
             throw Error('Failed to fetch info')
         }

@@ -1,5 +1,5 @@
 import axios, {AxiosResponse} from "axios";
-const baseUrl = 'http://localhost:4000' as const
+const baseUrl = 'http://localhost:4002' as const
 
 type FetchUserApiResponseType = {
     user: UserApiType
@@ -27,14 +27,14 @@ export const fetchUserApi = async (id: string): Promise<FetchUserApiResponseType
     }
 }
 
-export const addUserApi = async (user: Pick<UserApiType, 'name' | 'email'>): Promise<AddUserApiResponseType | Error> => {
-    try{
-        const response: AxiosResponse<AddUserApiResponseType> = await axios.post(baseUrl + '/add-user', user)
-        if (response.status !== 200 || !response.data) {
-            throw Error('Failed to add user')
-        }
-        return response.data
-    } catch (e) {
-        return handleErrorApi(e, 'Error addUserApi')
-    }
-}
+// export const addUserApi = async (user: Pick<UserApiType, 'name' | 'email'>): Promise<AddUserApiResponseType | Error> => {
+//     try{
+//         const response: AxiosResponse<AddUserApiResponseType> = await axios.post(baseUrl + '/add-user', user)
+//         if (response.status !== 200 || !response.data) {
+//             throw Error('Failed to add user')
+//         }
+//         return response.data
+//     } catch (e) {
+//         return handleErrorApi(e, 'Error addUserApi')
+//     }
+// }

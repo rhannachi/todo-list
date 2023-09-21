@@ -54,6 +54,7 @@ body {
 .Card--text h1 {
     color: var(--color-font-primary);
     font-size: 2rem;
+    min-width: 250px;
 }
 
 .Card--button button {

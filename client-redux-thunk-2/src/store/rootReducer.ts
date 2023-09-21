@@ -1,9 +1,9 @@
 import { AnyAction, combineReducers } from '@reduxjs/toolkit'
-import { todosSlice } from './todo'
+import { todoSlice } from './todo'
 import { userSlice } from './user'
 
 const combinedReducer = combineReducers({
-    [todosSlice.name]: todosSlice.reducer,
+    [todoSlice.name]: todoSlice.reducer,
     [userSlice.name]: userSlice.reducer,
 })
 

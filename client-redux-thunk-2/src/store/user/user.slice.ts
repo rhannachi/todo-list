@@ -1,5 +1,5 @@
 import {createSlice} from "@reduxjs/toolkit";
-import {addUserThunk, fetchUserThunk } from "./user.thunk";
+import {fetchUserThunk } from "./user.thunk";
 import {RootState} from "../index";
 
 type TodosState = {
@@ -55,34 +55,34 @@ export const userSlice = createSlice({
                 }
             });
         /** AddTodoApi **/
-        builder.addCase(addUserThunk.pending,(state) => {
-            return {
-                ...state,
-                status: 'loading',
-                error: undefined
-            }
-        });
-        builder.addCase(addUserThunk.fulfilled,(state, { payload }) => {
-            return {
-                ...state,
-                status:"finished",
-                list: [...state.list, payload]
-            }
-        });
-        builder.addCase(addUserThunk.rejected,(state, { payload }) => {
-            let newState = {...state}
-            if (payload) {
-                newState = {
-                    ...newState,
-                    error: payload.message
-                }
-            }
-            return {
-                ...newState,
-                status: 'finished'
-            }
-        });
+        // builder.addCase(addUserThunk.pending,(state) => {
+        //     return {
+        //         ...state,
+        //         status: 'loading',
+        //         error: undefined
+        //     }
+        // });
+        // builder.addCase(addUserThunk.fulfilled,(state, { payload }) => {
+        //     return {
+        //         ...state,
+        //         status:"finished",
+        //         list: [...state.list, payload]
+        //     }
+        // });
+        // builder.addCase(addUserThunk.rejected,(state, { payload }) => {
+        //     let newState = {...state}
+        //     if (payload) {
+        //         newState = {
+        //             ...newState,
+        //             error: payload.message
+        //         }
+        //     }
+        //     return {
+        //         ...newState,
+        //         status: 'finished'
+        //     }
+        // });
     },
 });
 
-export const userSelector = (state: RootState) => state.todos
+export const userSelector = (state: RootState) => state.user

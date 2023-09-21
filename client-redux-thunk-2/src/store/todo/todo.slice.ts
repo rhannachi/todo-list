@@ -14,8 +14,8 @@ const initialState: TodosState = {
     status: "finished",
 };
 
-export const todosSlice = createSlice({
-    name: "todos",
+export const todoSlice = createSlice({
+    name: "todo",
     initialState,
     reducers: {
         // increment(state) {
@@ -57,4 +57,4 @@ export const todosSlice = createSlice({
     },
 });
 
-export const todosSelector = (state: RootState) => state.todos
+export const todoSelector = (state: RootState) => state.todo

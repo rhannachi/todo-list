@@ -1,6 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import {fetchInfoApi, fetchTodosApi} from "./todo.service";
-import {todoTransform} from "./todo.mapper";
+import {TodoTypeMapper} from "./todo.mapper";
+import {fetchUserThunk} from "../user";
 
 type RejectType = {
     rejectValue: {
@@ -23,6 +24,8 @@ export const fetchTodosThunk = createAsyncThunk<TodoType[], undefined, RejectTyp
             });
         }
 
+        todosResponse.todos.map(({userId}) => thunkApi.dispatch(fetchUserThunk(userId)))
+
         const fetchInfosApiPromise = todosResponse.todos.map(({_id}) => fetchInfoApi(_id))
         const infosResponse = (await Promise.all(fetchInfosApiPromise)).reduce((acc: InfoApiType[], item) => {
             if (item instanceof Error) {
@@ -35,7 +38,7 @@ export const fetchTodosThunk = createAsyncThunk<TodoType[], undefined, RejectTyp
         const todos = todosResponse.todos.reduce((acc: TodoType[], todo) => {
             const info = infosResponse.find(({todoId}) => todoId === todo._id)
             if (info) {
-                return [...acc, todoTransform(todo, info)]
+                return [...acc, TodoTypeMapper(todo, info)]
             }
 
             return acc
