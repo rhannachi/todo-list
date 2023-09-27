@@ -77,9 +77,10 @@ body {
 }
 
 /* To-do, Description, Add */
-.Form {
+.form {
     display: flex;
     justify-content: space-between;
+    flex-direction: column;
     align-items: center;
     padding: 1rem;
     background: var(--color-background-button);
@@ -87,32 +88,45 @@ body {
     border-bottom: 1px solid #333333;
 }
 
-.Form div+div input {
-    width: 150%;
-}
+/*.form div+div input {*/
+/*    width: 150%;*/
+/*}*/
 
-.Form > div {
+.form .item {
+    width: -webkit-fill-available;
+    flex-direction: row;
     display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
-.Form input {
+.form .input {
     background: var(--color-background-button);
     padding: 0.5rem 1rem;
     border: 1px solid blue;
     display: block;
     margin: 0.3rem 1rem 0 0;
     font-size: 1rem;
+    width: inherit;
 }
 
-.Form button {
+.form .submit-button button {
     background: var(--color-background-button);
     border: 1px solid blue;
     color: blue;
     padding: 0.5rem 1rem;
     cursor: pointer;
     font-size: 1rem;
+    width: 200px;
+}
+
+.form .submit-button button[disabled] {
+    background: #e2e2e2;
+    color: #a0a0ff;
+    border: 1px solid #a0a0ff;
+}
+
+.form .submit-button {
+    justify-content: center;
+    margin-top: 30px;
 }
 
 .line-through {
