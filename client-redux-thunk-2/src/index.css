@@ -45,7 +45,6 @@ body {
 .container {
     display: flex;
     flex-direction: row;
-    margin-bottom: 10px;
 }
 
 /**
@@ -70,20 +69,36 @@ body {
 
  */
 
-.card {
+.container-todo {
+    width: -webkit-fill-available;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: row;
+    margin: 10px 0 10px 0;
+}
+
+.grid-todo {
+    display: flex;
+    flex-direction: column;
+    width: -webkit-fill-available;
     background: var(--color-background-button);
     padding: 0.5rem 1rem;
     border-bottom: 1px solid #333333;
 }
 
-.card-text h1 {
-    color: var(--color-font-primary);
-    font-size: 2rem;
-    min-width: 250px;
+.grid-todo > h1 {
+    padding-bottom: 30px;
 }
+
+.todo-item {
+    border: 1px solid blue;
+    padding: 10px;
+    margin-bottom: 30px;
+    background: #eeeeee;
+}
+
+/**
+
+ */
 
 /* To-do, Description, Add */
 .container-add-todo {

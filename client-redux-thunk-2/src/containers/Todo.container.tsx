@@ -60,13 +60,24 @@ export const TodoContainer: React.FC = () => {
                 </div>
             </div>
 
-
-            {data.map((item) => (
-                <TodoItem
-                    key={item.id}
-                    data={item}
-                />
-            ))}
+            <div className="container-todo">
+                <div className="grid-todo" >
+                    <h1>TODO</h1>
+                    {data.map((item) => (
+                        <TodoItem
+                             key={item.id} data={item}
+                         />
+                    ))}
+                </div>
+                <div className="grid-todo" style={{margin: '0 10px 0 10px'}} >
+                    <h1>Progress</h1>
+                    <div></div>
+                </div>
+                <div className="grid-todo" >
+                    <h1>Done</h1>
+                    <div></div>
+                </div>
+            </div>
         </main>
     )
 }
