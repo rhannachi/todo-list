@@ -24,7 +24,17 @@ export const fetchTodosThunk = createAsyncThunk<TodoType[], undefined, RejectTyp
             });
         }
 
-        todosResponse.todos.map(({userId}) => thunkApi.dispatch(fetchUserThunk(userId)))
+        // get user ids
+        const usersId = todosResponse.todos.reduce((acc: string[], { userId }:  TodoApiType) => {
+            const exist = acc.includes(userId)
+            if (!exist) {
+                acc.push(userId)
+            }
+            return acc
+        }, [])
+
+        // call fetch user
+        usersId.map((userId) => thunkApi.dispatch(fetchUserThunk(userId)))
 
         const fetchInfosApiPromise = todosResponse.todos.map(({_id}) => fetchInfoApi(_id))
         const infosResponse = (await Promise.all(fetchInfosApiPromise)).reduce((acc: InfoApiType[], item) => {

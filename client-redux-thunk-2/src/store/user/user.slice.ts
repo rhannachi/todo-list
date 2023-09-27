@@ -35,10 +35,11 @@ export const userSlice = createSlice({
             }
         });
         builder.addCase(fetchUserThunk.fulfilled,(state, { payload }) => {
+            const exist =  state.list.find((item) => item.id === payload.id)
                 return {
                     ...state,
                     status:"finished",
-                    list: [...state.list, payload]
+                    list: exist ? state.list : [...state.list, payload]
                 }
             });
         builder.addCase(fetchUserThunk.rejected,(state, { payload }) => {

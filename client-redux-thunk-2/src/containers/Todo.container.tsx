@@ -3,7 +3,7 @@ import React, { useEffect } from 'react'
 import {useAppDispatch, useAppSelector} from "../store";
 import {fetchTodosThunk, todoSelector} from "../store/todo";
 import {userSelector} from "../store/user";
-import {AddTodo, FormDataType, ItemTodo, ItemTodoProps} from "../components";
+import {AddTodo, FormDataType, TodoItem} from "../components";
 import {itemTodoPropsDataArrayMapper} from "./helpers";
 
 export const TodoContainer: React.FC = () => {
@@ -40,7 +40,6 @@ export const TodoContainer: React.FC = () => {
     const data = itemTodoPropsDataArrayMapper(todos.list, users.list)
 
     const saveTodo = (e: React.FormEvent, formData: FormDataType) => {
-        console.log("save Todo")
         console.log({formData})
         e.preventDefault()
     }
@@ -48,13 +47,24 @@ export const TodoContainer: React.FC = () => {
     return (
         <main className='App'>
             <h1>TODO list</h1>
-            <AddTodo saveTodo={saveTodo} />
+
+            <div className="container" >
+                <AddTodo saveTodo={saveTodo} />
+
+                <div className='container-user'>
+                    <ul>
+                        {users.list.map(({id, email}) => (
+                            <li key={id}> {email} </li>
+                        ))}
+                    </ul>
+                </div>
+            </div>
+
+
             {data.map((item) => (
-                <ItemTodo
+                <TodoItem
                     key={item.id}
                     data={item}
-                    // updateTodo={handleUpdateTodo}
-                    // deleteTodo={handleDeleteTodo}
                 />
             ))}
         </main>

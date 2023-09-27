@@ -6,7 +6,7 @@ type TodoApiType = {
 
 type InfoApiType = {
   _id: string
-  label: boolean
+  label: string
   description: string
   todoId: string
 }

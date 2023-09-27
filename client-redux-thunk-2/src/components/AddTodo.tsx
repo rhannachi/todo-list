@@ -38,7 +38,7 @@ export const AddTodo: React.FC<AddTodoProps> = ({ saveTodo }) => {
   }
 
   return (
-    <form className='form' onSubmit={(e) => formData && saveTodo(e, formData)}>
+    <form className='container-add-todo' onSubmit={(e) => formData && saveTodo(e, formData)}>
       <div>
           <div className="item">
               <input id="name" className='input' placeholder="Name" onChange={handleForm} type='text' />

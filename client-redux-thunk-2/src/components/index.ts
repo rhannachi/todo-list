@@ -1,2 +1,2 @@
-export * from './ItemTodo'
+export * from './TodoItem'
 export * from './AddTodo'
