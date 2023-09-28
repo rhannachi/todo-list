@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import {addUserApi, fetchUserApi} from "./user.service";
-import {userMapper} from "./user.mapper";
+import {addUserApi, fetchUsersApi} from "./user.service";
+import {userMapper, usersMapper} from "./user.mapper";
 
 type RejectType = {
     rejectValue: {
@@ -11,17 +11,31 @@ type RejectType = {
 /**
  * FetchTodos API
  */
-export const fetchUserThunk = createAsyncThunk<UserType, string, RejectType>(
-    "user/fetch",
-    async (id, thunkApi) => {
-        const response = await fetchUserApi(id)
+// export const fetchUserThunk = createAsyncThunk<UserType, string, RejectType>(
+//     "user/fetch",
+//     async (id, thunkApi) => {
+//         const response = await fetchUserApi(id)
+//
+//         if (response instanceof Error) {
+//             return thunkApi.rejectWithValue({
+//                 message: response.message
+//             });
+//         }
+//         return userMapper(response.user)
+//     }
+// );
+
+export const fetchUsersThunk = createAsyncThunk<UserType[], undefined, RejectType>(
+    "users/fetch",
+    async (undefined,thunkApi) => {
+        const response = await fetchUsersApi()
 
         if (response instanceof Error) {
             return thunkApi.rejectWithValue({
                 message: response.message
             });
         }
-        return userMapper(response.user)
+        return usersMapper(response.users)
     }
 );
 

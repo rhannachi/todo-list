@@ -10,15 +10,15 @@ export type FormDataType = {
 }
 
 type AddTodoProps = {
-  saveTodo: (e: React.FormEvent, formData: FormDataType) => void
+  saveTodo: (formData: FormDataType) => void
 }
 
-const validateForm = (form: Partial<FormDataType>) => {
-    return 'name' in form
+const validateForm = (form?: Partial<FormDataType>) => {
+    return form && ('name' in form
         && 'label' in form
         &&'description' in form
         && 'email' in form
-        && 'user' in form
+        && 'user' in form)
 }
 
 export const AddTodo: React.FC<AddTodoProps> = ({ saveTodo }) => {
@@ -33,12 +33,9 @@ export const AddTodo: React.FC<AddTodoProps> = ({ saveTodo }) => {
   }
 
   const onSubmit = (e: React.FormEvent) => {
-      if (formData) {
-          if (validateForm(formData)) {
-              // TODO improvement
-              saveTodo(e, formData as FormDataType )
-          }
-      }
+      e.preventDefault()
+      // TODO improvement
+      saveTodo(formData as FormDataType )
   }
 
   return (
@@ -56,7 +53,7 @@ export const AddTodo: React.FC<AddTodoProps> = ({ saveTodo }) => {
               <input id="email" className='input' placeholder="E-mail" onChange={handleForm} type='text' />
           </div>
           <div className="submit-button item" >
-              <button type="submit" disabled={!formData} >Add</button>
+              <button type="submit" disabled={!validateForm(formData)} >Add</button>
           </div>
       </div>
     </form>
