@@ -2,8 +2,6 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import {addInfoApi, addTodoApi, fetchInfoApi, fetchTodosApi} from "./todo.service";
 import {TodoTypeMapper} from "./todo.mapper";
 import {addUserThunk, fetchUserThunk} from "../user";
-import {addUserApi} from "../user/user.service";
-import {FormDataType} from "../../components";
 
 type RejectType = {
     rejectValue: {
@@ -81,19 +79,6 @@ export const addTodoThunk = createAsyncThunk<TodoType, AddTodoThunkPayloadType, 
     "todos/add",
     async (data, thunkApi) => {
 
-        // const addUserApiPayload: Parameters<typeof addUserApi> = [{
-        //     name: data.user,
-        //     email: data.email
-        // }]
-        //
-        // const userResponse = await addUserApi(...addUserApiPayload)
-        //
-        // if (userResponse instanceof Error) {
-        //     return thunkApi.rejectWithValue({
-        //         message: userResponse.message
-        //     });
-        // }
-
         const userResponse = await thunkApi.dispatch(addUserThunk({
             name: data.user,
             email: data.email
@@ -104,8 +89,6 @@ export const addTodoThunk = createAsyncThunk<TodoType, AddTodoThunkPayloadType, 
                 message: 'error add user' // TODO ...
             });
         }
-
-        console.log({ userResponse })
 
         /////////////
 

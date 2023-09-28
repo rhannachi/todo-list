@@ -47,10 +47,6 @@ body {
     flex-direction: row;
 }
 
-/**
-
- */
-
 .container-user {
     width: -webkit-fill-available;
     display: flex;
@@ -64,10 +60,6 @@ body {
 .container-user > ul {
     padding-left: 20px;
 }
-
-/**
-
- */
 
 .container-todo {
     width: -webkit-fill-available;
@@ -96,11 +88,6 @@ body {
     background: #eeeeee;
 }
 
-/**
-
- */
-
-/* To-do, Description, Add */
 .container-add-todo {
     display: flex;
     justify-content: space-between;
@@ -110,10 +97,6 @@ body {
     background: var(--color-background-button);
     border-bottom: 1px solid #333333;
 }
-
-/*.container-add-todo div+div input {*/
-/*    width: 150%;*/
-/*}*/
 
 .container-add-todo .item {
     width: -webkit-fill-available;

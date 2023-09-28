@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
+import {clearEmpties} from "../helper";
 
-// TODO remove Partial
 export type FormDataType = {
     name: string
     label: string
@@ -11,19 +11,6 @@ export type FormDataType = {
 
 type AddTodoProps = {
   saveTodo: (e: React.FormEvent, formData: FormDataType) => void
-}
-
-// TODO move function ...
-const clearEmpties = (object: Record<string, string>) => {
-    const newObject = {
-        ...object
-    }
-    for (const k in newObject) {
-        if (newObject[k].length === 0) {
-            delete newObject[k]
-        }
-    }
-    return !Object.keys(newObject).length ? undefined : newObject;
 }
 
 const validateForm = (form: Partial<FormDataType>) => {

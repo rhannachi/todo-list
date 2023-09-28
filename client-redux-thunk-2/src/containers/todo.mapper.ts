@@ -1,4 +1,4 @@
-import {TodoItemProps} from "../../components";
+import {TodoItemProps} from "../components";
 
 export const itemTodoPropsDataArrayMapper = (todos: TodoType[], users: UserType[]): TodoItemProps['data'][] => {
     return todos.map((todo) => ({

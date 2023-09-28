@@ -1,7 +1,6 @@
 import {createSlice} from "@reduxjs/toolkit";
 import {addTodoThunk, fetchTodosThunk} from "./todo.thunk";
 import {RootState} from "../index";
-import {addUserThunk} from "../user";
 
 type TodosState = {
     status: "loading" | "finished";

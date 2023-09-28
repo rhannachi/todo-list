@@ -4,7 +4,7 @@ import {useAppDispatch, useAppSelector} from "../store";
 import {addTodoThunk, fetchTodosThunk, todoSelector} from "../store/todo";
 import {userSelector} from "../store/user";
 import {AddTodo, FormDataType, TodoItem} from "../components";
-import {itemTodoPropsDataArrayMapper} from "./helpers";
+import {itemTodoPropsDataArrayMapper} from "./todo.mapper";
 
 export const TodoContainer: React.FC = () => {
     const todos = useAppSelector(todoSelector);
@@ -16,33 +16,10 @@ export const TodoContainer: React.FC = () => {
         dispatch(fetchTodosThunk())
     }, [])
 
-//  const handleSaveTodo = (e: React.FormEvent, todo: UserType): void => {
-//       e.preventDefault()
-//      dispatch(addTodoThunk({
-//          ...todo,
-//          status: false
-//      }))
-// }
-
-    // const handleUpdateTodo = (todo: UserType): void => {
-    //     dispatch(updateTodoThunk({
-    //         id: todo.id,
-    //         status: true
-    //     }))
-    // }
-
-    // const handleDeleteTodo = (id: string): void => {
-    //     dispatch(deleteTodoThunk({
-    //         id
-    //     }))
-    // }
-
     const data = itemTodoPropsDataArrayMapper(todos.list, users.list)
 
-    const saveTodo = (e: React.FormEvent, formData: FormDataType) => {
-        console.log({formData})
+    const handleSaveTodo = (e: React.FormEvent, formData: FormDataType) => {
         e.preventDefault()
-
         dispatch(addTodoThunk({
             email: formData.email,
             user: formData.user ,
@@ -50,7 +27,6 @@ export const TodoContainer: React.FC = () => {
             label: formData.label ,
             name: formData.name ,
         }))
-
     }
 
     return (
@@ -58,7 +34,7 @@ export const TodoContainer: React.FC = () => {
             <h1>TODO list</h1>
 
             <div className="container" >
-                <AddTodo saveTodo={saveTodo} />
+                <AddTodo saveTodo={handleSaveTodo} />
 
                 <div className='container-user'>
                     <ul>
