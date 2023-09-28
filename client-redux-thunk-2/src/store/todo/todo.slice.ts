@@ -1,6 +1,7 @@
 import {createSlice} from "@reduxjs/toolkit";
-import {fetchTodosThunk} from "./todo.thunk";
+import {addTodoThunk, fetchTodosThunk} from "./todo.thunk";
 import {RootState} from "../index";
+import {addUserThunk} from "../user";
 
 type TodosState = {
     status: "loading" | "finished";
@@ -26,6 +27,7 @@ export const todoSlice = createSlice({
         // },
     },
     extraReducers: (builder) => {
+        /** Fetch TODO **/
         builder.addCase(fetchTodosThunk.pending,(state) => {
             return {
                 ...state,
@@ -53,6 +55,34 @@ export const todoSlice = createSlice({
                     status: 'finished'
                 }
             });
+        /** ADD TODO **/
+        builder.addCase(addTodoThunk.pending,(state) => {
+            return {
+                ...state,
+                status: 'loading',
+                error: undefined
+            }
+        });
+        builder.addCase(addTodoThunk.fulfilled,(state, { payload }) => {
+            return {
+                ...state,
+                status:"finished",
+                list: [...state.list, payload]
+            }
+        });
+        builder.addCase(addTodoThunk.rejected,(state, { payload }) => {
+            let newState = {...state}
+            if (payload) {
+                newState = {
+                    ...newState,
+                    error: payload.message
+                }
+            }
+            return {
+                ...newState,
+                status: 'finished'
+            }
+        });
     },
 });
 

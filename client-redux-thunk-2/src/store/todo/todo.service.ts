@@ -26,8 +26,29 @@ export const fetchTodosApi = async (): Promise<FetchTodosApiResponseType | Error
     }
 }
 /**
- * Fetch Info by userId : API
+ *  TODO
  */
+
+type AddTodoApiPayloadType = Omit<TodoApiType, '_id'>
+type AddTodoApiResponseType = {
+    todo: TodoApiType
+}
+export const addTodoApi = async (todo: AddTodoApiPayloadType): Promise<AddTodoApiResponseType | Error> => {
+    try{
+        const response: AxiosResponse<AddTodoApiResponseType> = await axios.post(todoBaseUrl + '/add-todo', todo)
+        if (response.status !== 200 || !response.data) {
+            throw Error('Failed to add todo')
+        }
+        return response.data
+    } catch (e) {
+        return handleErrorApi(e, 'Error addTodoApi')
+    }
+}
+
+/**
+ * INFO
+ */
+
 export type FetchInfoApiResponseType = {
     info: InfoApiType
 }
@@ -43,21 +64,22 @@ export const fetchInfoApi = async (userId: string): Promise<FetchInfoApiResponse
     }
 }
 
+type AddInfoApiPayloadType = Omit<InfoApiType, '_id'>
+type AddInfoApiResponseType = {
+    info: InfoApiType
+}
+export const addInfoApi = async (info: AddInfoApiPayloadType): Promise<AddInfoApiResponseType | Error> => {
+    try{
+        const response: AxiosResponse<AddInfoApiResponseType> = await axios.post(infoBaseUrl + '/add-info', info)
+        if (response.status !== 200 || !response.data) {
+            throw Error('Failed to add info')
+        }
+        return response.data
+    } catch (e) {
+        return handleErrorApi(e, 'Error addInfoApi')
+    }
+}
 
-// type AddTodoApiPayloadType = Omit<TodoApiType, '_id'>
-// type AddTodoApiResponseType = {
-//     todo: TodoApiType
-// }
-// export const addTodoApi = async (todo: AddTodoApiPayloadType): Promise<AddTodoApiResponseType | Error> => {
-//     try{
-//         const response: AxiosResponse<AddTodoApiResponseType> = await axios.post(baseUrl + '/add-todo', todo)
-//         if (response.status !== 200 || !response.data) {
-//             throw Error('Failed to add todo')
-//         }
-//         return response.data
-//     } catch (e) {
-//         return handleErrorApi(e, 'Error addTodoApi')
-//     }
-// }
+
 
 

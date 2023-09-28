@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
 
 // TODO remove Partial
-export type FormDataType = Partial<{
+export type FormDataType = {
     name: string
     label: string
     description: string
     email: string
     user: string
-}>
+}
 
 type AddTodoProps = {
   saveTodo: (e: React.FormEvent, formData: FormDataType) => void
@@ -26,8 +26,16 @@ const clearEmpties = (object: Record<string, string>) => {
     return !Object.keys(newObject).length ? undefined : newObject;
 }
 
+const validateForm = (form: Partial<FormDataType>) => {
+    return 'name' in form
+        && 'label' in form
+        &&'description' in form
+        && 'email' in form
+        && 'user' in form
+}
+
 export const AddTodo: React.FC<AddTodoProps> = ({ saveTodo }) => {
-  const [formData, setFormData] = useState<FormDataType | undefined >()
+  const [formData, setFormData] = useState<Partial<FormDataType> | undefined >()
 
   const handleForm = (e: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
     const newFormData = clearEmpties({
@@ -37,8 +45,17 @@ export const AddTodo: React.FC<AddTodoProps> = ({ saveTodo }) => {
     setFormData(newFormData)
   }
 
+  const onSubmit = (e: React.FormEvent) => {
+      if (formData) {
+          if (validateForm(formData)) {
+              // TODO improvement
+              saveTodo(e, formData as FormDataType )
+          }
+      }
+  }
+
   return (
-    <form className='container-add-todo' onSubmit={(e) => formData && saveTodo(e, formData)}>
+    <form className='container-add-todo' onSubmit={onSubmit}>
       <div>
           <div className="item">
               <input id="name" className='input' placeholder="Name" onChange={handleForm} type='text' />

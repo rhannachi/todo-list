@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 
 import {useAppDispatch, useAppSelector} from "../store";
-import {fetchTodosThunk, todoSelector} from "../store/todo";
+import {addTodoThunk, fetchTodosThunk, todoSelector} from "../store/todo";
 import {userSelector} from "../store/user";
 import {AddTodo, FormDataType, TodoItem} from "../components";
 import {itemTodoPropsDataArrayMapper} from "./helpers";
@@ -42,6 +42,15 @@ export const TodoContainer: React.FC = () => {
     const saveTodo = (e: React.FormEvent, formData: FormDataType) => {
         console.log({formData})
         e.preventDefault()
+
+        dispatch(addTodoThunk({
+            email: formData.email,
+            user: formData.user ,
+            description: formData.description ,
+            label: formData.label ,
+            name: formData.name ,
+        }))
+
     }
 
     return (

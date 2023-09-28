@@ -1,7 +1,9 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import {fetchInfoApi, fetchTodosApi} from "./todo.service";
+import {addInfoApi, addTodoApi, fetchInfoApi, fetchTodosApi} from "./todo.service";
 import {TodoTypeMapper} from "./todo.mapper";
-import {fetchUserThunk} from "../user";
+import {addUserThunk, fetchUserThunk} from "../user";
+import {addUserApi} from "../user/user.service";
+import {FormDataType} from "../../components";
 
 type RejectType = {
     rejectValue: {
@@ -34,7 +36,11 @@ export const fetchTodosThunk = createAsyncThunk<TodoType[], undefined, RejectTyp
         }, [])
 
         // call fetch user
-        usersId.map((userId) => thunkApi.dispatch(fetchUserThunk(userId)))
+        usersId.map(async (userId) => {
+            const x = await thunkApi.dispatch(fetchUserThunk(userId))
+            console.log({'return': x})
+            console.log('')
+        })
 
         const fetchInfosApiPromise = todosResponse.todos.map(({_id}) => fetchInfoApi(_id))
         const infosResponse = (await Promise.all(fetchInfosApiPromise)).reduce((acc: InfoApiType[], item) => {
@@ -63,23 +69,75 @@ export const fetchTodosThunk = createAsyncThunk<TodoType[], undefined, RejectTyp
  * AddTodo API
  */
 
-// export const addTodoThunk = createAsyncThunk<TodoType, Omit<TodoType, 'id'>, RejectType>(
-//     "todos/add",
-//     async (todo, thunkApi) => {
-//
-//         const addTodoApiPayload: Parameters<typeof addTodoApi> = [{
-//             name: todo.name,
-//             description: todo.description,
-//             status: todo.status
-//         }]
-//
-//         const response = await addTodoApi(...addTodoApiPayload)
-//
-//         if (response instanceof Error) {
-//             return thunkApi.rejectWithValue({
-//                 message: response.message
-//             });
-//         }
-//         return todoMapper(response.todo)
-//     }
-// );
+type AddTodoThunkPayloadType = {
+    name: string
+    label: string
+    description: string
+    email: string
+    user: string
+}
+
+export const addTodoThunk = createAsyncThunk<TodoType, AddTodoThunkPayloadType, RejectType>(
+    "todos/add",
+    async (data, thunkApi) => {
+
+        // const addUserApiPayload: Parameters<typeof addUserApi> = [{
+        //     name: data.user,
+        //     email: data.email
+        // }]
+        //
+        // const userResponse = await addUserApi(...addUserApiPayload)
+        //
+        // if (userResponse instanceof Error) {
+        //     return thunkApi.rejectWithValue({
+        //         message: userResponse.message
+        //     });
+        // }
+
+        const userResponse = await thunkApi.dispatch(addUserThunk({
+            name: data.user,
+            email: data.email
+        }))
+
+        if (userResponse.type !== 'user/add/fulfilled') {
+            return thunkApi.rejectWithValue({
+                message: 'error add user' // TODO ...
+            });
+        }
+
+        console.log({ userResponse })
+
+        /////////////
+
+        const addTodoApiPayload: Parameters<typeof addTodoApi> = [{
+            name: data.name,
+            userId: (userResponse.payload as UserType).id // TODO improvement
+        }]
+
+        const todoResponse = await addTodoApi(...addTodoApiPayload)
+
+        if (todoResponse instanceof Error) {
+            return thunkApi.rejectWithValue({
+                message: todoResponse.message
+            });
+        }
+
+        /////////////
+
+        const addInfoApiPayload: Parameters<typeof addInfoApi> = [{
+            label: data.label,
+            description: data.description,
+            todoId: todoResponse.todo._id
+        }]
+
+        const infoResponse = await addInfoApi(...addInfoApiPayload)
+
+        if (infoResponse instanceof Error) {
+            return thunkApi.rejectWithValue({
+                message: infoResponse.message
+            });
+        }
+
+        return TodoTypeMapper(todoResponse.todo, infoResponse.info)
+    }
+);

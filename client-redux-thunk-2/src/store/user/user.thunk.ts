@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { fetchUserApi } from "./user.service";
+import {addUserApi, fetchUserApi} from "./user.service";
 import {userMapper} from "./user.mapper";
 
 type RejectType = {
@@ -29,22 +29,22 @@ export const fetchUserThunk = createAsyncThunk<UserType, string, RejectType>(
  * AddTodo API
  */
 
-// export const addUserThunk = createAsyncThunk<UserType, Pick<UserType, 'name' | 'email'>, RejectType>(
-//     "user/add",
-//     async (user, thunkApi) => {
-//
-//         const addUserApiPayload: Parameters<typeof addUserApi> = [{
-//             name: user.name,
-//             email: user.email
-//         }]
-//
-//         const response = await addUserApi(...addUserApiPayload)
-//
-//         if (response instanceof Error) {
-//             return thunkApi.rejectWithValue({
-//                 message: response.message
-//             });
-//         }
-//         return userMapper(response.user)
-//     }
-// );
+export const addUserThunk = createAsyncThunk<UserType, Pick<UserType, 'name' | 'email'>, RejectType>(
+    "user/add",
+    async (user, thunkApi) => {
+
+        const addUserApiPayload: Parameters<typeof addUserApi> = [{
+            name: user.name,
+            email: user.email
+        }]
+
+        const response = await addUserApi(...addUserApiPayload)
+
+        if (response instanceof Error) {
+            return thunkApi.rejectWithValue({
+                message: response.message
+            });
+        }
+        return userMapper(response.user)
+    }
+);
