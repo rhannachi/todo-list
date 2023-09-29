@@ -1,0 +1,5 @@
+{
+  "extends": [
+    "@rhannachi/eslint-config-prettier"
+  ]
+}

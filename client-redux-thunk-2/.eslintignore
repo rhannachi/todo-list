@@ -1,0 +1,7 @@
+node_modules
+build
+.eslintrc.js
+coverage
+.storybook
+storybook-static
+*.config.*
