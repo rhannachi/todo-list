@@ -1,6 +1,6 @@
-import {TodoItemProps} from "../components";
+import {TodoListProps} from "../components";
 
-export const itemTodoPropsDataArrayMapper = (todos: TodoType[], users: UserType[]): TodoItemProps['data'][] => {
+export const todoListPropsMapper = (todos: TodoType[], users: UserType[]): TodoListProps['todoList'] => {
     return todos.map((todo) => ({
         id: todo.id,
         name: todo.name,

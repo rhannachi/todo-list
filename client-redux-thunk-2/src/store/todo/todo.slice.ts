@@ -26,7 +26,7 @@ export const todoSlice = createSlice({
         // },
     },
     extraReducers: (builder) => {
-        /** Fetch TODO **/
+        /** Fetch TODOS **/
         builder.addCase(fetchTodosThunk.pending,(state) => {
             return {
                 ...state,

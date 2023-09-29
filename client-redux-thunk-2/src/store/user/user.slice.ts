@@ -26,6 +26,7 @@ export const userSlice = createSlice({
         // },
     },
     extraReducers: (builder) => {
+        /** FETCH Users **/
         builder.addCase(fetchUsersThunk.pending,(state) => {
             return {
                 ...state,
@@ -53,35 +54,6 @@ export const userSlice = createSlice({
                 status: 'finished'
             }
         });
-        /** Fetch USER **/
-        // builder.addCase(fetchUserThunk.pending,(state) => {
-        //     return {
-        //         ...state,
-        //         status: 'loading',
-        //         error: undefined
-        //     }
-        // });
-        // builder.addCase(fetchUserThunk.fulfilled,(state, { payload }) => {
-        //     const exist =  state.list.find((item) => item.id === payload.id)
-        //         return {
-        //             ...state,
-        //             status:"finished",
-        //             list: exist ? state.list : [...state.list, payload]
-        //         }
-        //     });
-        // builder.addCase(fetchUserThunk.rejected,(state, { payload }) => {
-        //     let newState = {...state}
-        //         if (payload) {
-        //             newState = {
-        //                 ...newState,
-        //                 error: payload.message
-        //             }
-        //         }
-        //         return {
-        //             ...newState,
-        //             status: 'finished'
-        //         }
-        //     });
         /** ADD User **/
         builder.addCase(addUserThunk.pending,(state) => {
             return {

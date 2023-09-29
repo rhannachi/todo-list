@@ -2,12 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import {addInfoApi, addTodoApi, fetchInfoApi, fetchTodosApi} from "./todo.service";
 import {TodoTypeMapper} from "./todo.mapper";
 import {addUserThunk} from "../user";
-
-type RejectType = {
-    rejectValue: {
-        message: string
-    }
-}
+import {RejectType, ToObjectType} from "../../helper";
 
 /**
  * FetchTodos API
@@ -23,18 +18,6 @@ export const fetchTodosThunk = createAsyncThunk<TodoType[], undefined, RejectTyp
                 message: todosResponse.message
             });
         }
-
-        // // get user ids
-        // const usersId = todosResponse.todos.reduce((acc: string[], { userId }:  TodoApiType) => {
-        //     const exist = acc.includes(userId)
-        //     if (!exist) {
-        //         acc.push(userId)
-        //     }
-        //     return acc
-        // }, [])
-        //
-        // // call fetch user
-        // usersId.map(async (userId) => thunkApi.dispatch(fetchUserThunk(userId)))
 
         const fetchInfosApiPromise = todosResponse.todos.map(({_id}) => fetchInfoApi(_id))
         const infosResponse = (await Promise.all(fetchInfosApiPromise)).reduce((acc: InfoApiType[], item) => {
@@ -88,12 +71,12 @@ export const addTodoThunk = createAsyncThunk<TodoType, AddTodoThunkPayloadType, 
 
         /////////////
 
-        const addTodoApiPayload: Parameters<typeof addTodoApi> = [{
+        const addTodoApiPayload: ToObjectType<Parameters<typeof addTodoApi>> = {
             name: data.name,
             userId: (userResponse.payload as UserType).id // TODO improvement
-        }]
+        }
 
-        const todoResponse = await addTodoApi(...addTodoApiPayload)
+        const todoResponse = await addTodoApi(addTodoApiPayload)
 
         if (todoResponse instanceof Error) {
             return thunkApi.rejectWithValue({
@@ -103,13 +86,13 @@ export const addTodoThunk = createAsyncThunk<TodoType, AddTodoThunkPayloadType, 
 
         /////////////
 
-        const addInfoApiPayload: Parameters<typeof addInfoApi> = [{
+        const addInfoApiPayload: ToObjectType<Parameters<typeof addInfoApi>> = {
             label: data.label,
             description: data.description,
             todoId: todoResponse.todo._id
-        }]
+        }
 
-        const infoResponse = await addInfoApi(...addInfoApiPayload)
+        const infoResponse = await addInfoApi(addInfoApiPayload)
 
         if (infoResponse instanceof Error) {
             return thunkApi.rejectWithValue({

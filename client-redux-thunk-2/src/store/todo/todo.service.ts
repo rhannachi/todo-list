@@ -1,15 +1,11 @@
 import axios, {AxiosResponse} from "axios";
+import {handleErrorApi} from "../../helper";
+
 const todoBaseUrl = 'http://localhost:4001' as const
 const infoBaseUrl = 'http://localhost:4003' as const
 
-const handleErrorApi = (e: unknown, message: string): Error => {
-    if (e instanceof Error) {
-        return new Error(e.message)
-    }
-    return new Error(message)
-}
 /**
- * Fetch Todos : API
+ * fetchTodosApi
  */
 type FetchTodosApiResponseType = {
     todos: TodoApiType[]
@@ -26,9 +22,8 @@ export const fetchTodosApi = async (): Promise<FetchTodosApiResponseType | Error
     }
 }
 /**
- *  TODO
+ * addTodoApi
  */
-
 type AddTodoApiPayloadType = Omit<TodoApiType, '_id'>
 type AddTodoApiResponseType = {
     todo: TodoApiType
@@ -44,12 +39,10 @@ export const addTodoApi = async (todo: AddTodoApiPayloadType): Promise<AddTodoAp
         return handleErrorApi(e, 'Error addTodoApi')
     }
 }
-
 /**
- * INFO
+ * fetchInfoApi
  */
-
-export type FetchInfoApiResponseType = {
+type FetchInfoApiResponseType = {
     info: InfoApiType
 }
 export const fetchInfoApi = async (userId: string): Promise<FetchInfoApiResponseType | Error> => {
@@ -63,7 +56,9 @@ export const fetchInfoApi = async (userId: string): Promise<FetchInfoApiResponse
         return handleErrorApi(e, 'Error fetchInfoApi')
     }
 }
-
+/**
+ * addInfoApi
+ */
 type AddInfoApiPayloadType = Omit<InfoApiType, '_id'>
 type AddInfoApiResponseType = {
     info: InfoApiType

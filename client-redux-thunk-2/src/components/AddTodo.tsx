@@ -1,20 +1,15 @@
 import React, { useState } from 'react'
 import {clearEmpties} from "../helper";
+import {HandleSaveTodoParametersType} from "../containers";
 
-export type FormDataType = {
-    name: string
-    label: string
-    description: string
-    email: string
-    user: string
-}
+type FormDataType = HandleSaveTodoParametersType
 
 type AddTodoProps = {
-  saveTodo: (formData: FormDataType) => void
+  saveTodo: (data: HandleSaveTodoParametersType) => void
 }
 
 const validateForm = (form?: Partial<FormDataType>) => {
-    return form && ('name' in form
+    return typeof form === 'object' && ('name' in form
         && 'label' in form
         &&'description' in form
         && 'email' in form
@@ -34,8 +29,15 @@ export const AddTodo: React.FC<AddTodoProps> = ({ saveTodo }) => {
 
   const onSubmit = (e: React.FormEvent) => {
       e.preventDefault()
-      // TODO improvement
-      saveTodo(formData as FormDataType )
+      if (formData && formData['name'] && formData['email'] && formData['user'] && formData['label'] && formData['description']) {
+          saveTodo({
+              name: formData.name,
+              label: formData.label,
+              description: formData.description,
+              user: formData.user,
+              email: formData.email
+          })
+      }
   }
 
   return (
