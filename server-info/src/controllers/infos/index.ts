@@ -45,4 +45,15 @@ export const addInfo = async (req: Request, res: Response): Promise<void> => {
     }
   }
 
-
+export const deleteInfo = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const deletedTodo: IInfo | null = await Info.findByIdAndRemove(
+            req.params.id
+        )
+        res.status(200).json({
+            _id: deletedTodo?._id,
+        })
+    } catch (error) {
+        throw error
+    }
+}

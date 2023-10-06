@@ -29,3 +29,15 @@ export const addTodo = async (req: Request, res: Response): Promise<void> => {
     }
   }
 
+export const deleteTodo = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const deletedTodo: ITodo | null = await Todo.findByIdAndRemove(
+            req.params.id
+        )
+        res.status(200).json({
+            _id: deletedTodo?._id,
+        })
+    } catch (error) {
+        throw error
+    }
+}
