@@ -1,5 +1,5 @@
 {
-  "name": "todoapp",
+  "name": "server-todo",
   "main": "index.ts",
   "repository": "",
   "author": "",
