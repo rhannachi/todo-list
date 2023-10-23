@@ -63,10 +63,22 @@ export const userSlice = createSlice({
       }
     })
     builder.addCase(addUserThunk.fulfilled, (state, { payload }) => {
-      return {
+      const newState: TodosState = {
         ...state,
         status: 'finished',
-        list: [...state.list, payload],
+      }
+
+      const exist = state.list.find((user) => user.email === payload.email)
+
+      if (!exist) {
+        return {
+          ...newState,
+          list: [...state.list, payload],
+        }
+      }
+      return {
+        ...newState,
+        list: [...state.list],
       }
     })
     builder.addCase(addUserThunk.rejected, (state, { payload }) => {
