@@ -19,7 +19,7 @@ export const getUser = async (req: Request, res: Response): Promise<void> => {
         if (user) {
             res.status(200).json({ user })
         } else {
-            res.status(200).json({})
+            res.status(200).json(undefined)
         }
     } catch (error) {
         throw error

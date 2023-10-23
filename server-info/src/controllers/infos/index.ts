@@ -19,7 +19,7 @@ export const getInfo = async (req: Request, res: Response): Promise<void> => {
         if (info) {
             res.status(200).json({ info })
         } else {
-            res.status(200).json({})
+            res.status(200).json(undefined)
         }
     } catch (error) {
         throw error

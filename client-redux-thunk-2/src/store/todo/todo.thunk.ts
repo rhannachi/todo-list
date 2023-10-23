@@ -1,5 +1,12 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import { addInfoApi, addTodoApi, fetchInfoApi, fetchTodosApi } from './todo.service'
+import {
+  addInfoApi,
+  addTodoApi,
+  fetchInfoApi,
+  fetchTodosApi,
+  deleteTodoApi,
+  deleteInfoApi,
+} from './todo.service'
 import { TodoTypeMapper } from './todo.mapper'
 import { addUserThunk } from '../user'
 import { RejectType, ToObjectType } from '../../helper'
@@ -22,7 +29,7 @@ export const fetchTodosThunk = createAsyncThunk<TodoType[], undefined, RejectTyp
     const fetchInfosApiPromise = todosResponse.todos.map(({ _id }) => fetchInfoApi(_id))
     const infosResponse = (await Promise.all(fetchInfosApiPromise)).reduce(
       (acc: InfoApiType[], item) => {
-        if (item instanceof Error) {
+        if (item instanceof Error || !item) {
           // TODO check return error
           return acc
         }
@@ -107,3 +114,36 @@ export const addTodoThunk = createAsyncThunk<TodoType, AddTodoThunkPayloadType, 
     return TodoTypeMapper(todoResponse.todo, infoResponse.info)
   },
 )
+
+/**
+ * DeleteTodo API
+ */
+
+type DeleteTodoThunkPayloadType = {
+  idTodo: string
+  idInfo: string
+}
+
+export const deleteTodoThunk = createAsyncThunk<
+  { id: string },
+  DeleteTodoThunkPayloadType,
+  RejectType
+>('todos/delete', async ({ idTodo, idInfo }, thunkApi) => {
+  const todoResponse = await deleteTodoApi(idTodo)
+
+  if (todoResponse instanceof Error) {
+    return thunkApi.rejectWithValue({
+      message: todoResponse.message,
+    })
+  }
+
+  const infoResponse = await deleteInfoApi(idInfo)
+
+  if (infoResponse instanceof Error) {
+    return thunkApi.rejectWithValue({
+      message: infoResponse.message,
+    })
+  }
+
+  return { id: idTodo }
+})

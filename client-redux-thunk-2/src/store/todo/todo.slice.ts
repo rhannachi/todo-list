@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { addTodoThunk, fetchTodosThunk } from './todo.thunk'
+import { addTodoThunk, deleteTodoThunk, fetchTodosThunk } from './todo.thunk'
 import { RootState } from '../../store'
 
 type TodosState = {
@@ -70,6 +70,34 @@ export const todoSlice = createSlice({
       }
     })
     builder.addCase(addTodoThunk.rejected, (state, { payload }) => {
+      let newState = { ...state }
+      if (payload) {
+        newState = {
+          ...newState,
+          error: payload.message,
+        }
+      }
+      return {
+        ...newState,
+        status: 'finished',
+      }
+    })
+    /** Delete TODO **/
+    builder.addCase(deleteTodoThunk.pending, (state) => {
+      return {
+        ...state,
+        status: 'loading',
+        error: undefined,
+      }
+    })
+    builder.addCase(deleteTodoThunk.fulfilled, (state, { payload }) => {
+      return {
+        ...state,
+        status: 'finished',
+        list: [...state.list].filter((todo) => todo.id !== payload.id),
+      }
+    })
+    builder.addCase(deleteTodoThunk.rejected, (state, { payload }) => {
       let newState = { ...state }
       if (payload) {
         newState = {

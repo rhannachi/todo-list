@@ -1,12 +1,13 @@
 import React, { useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '../store'
-import { addTodoThunk, fetchTodosThunk, todoSelector } from '../store/todo'
+import { addTodoThunk, deleteTodoThunk, fetchTodosThunk, todoSelector } from '../store/todo'
 import { fetchUsersThunk, userSelector } from '../store/user'
 import { AddTodo, TodoList, UserList } from '../components'
 import { todoListPropsMapper } from './home.mapper'
 import { ToObjectType } from '../helper'
 
 export type HandleSaveTodoParametersType = ToObjectType<Parameters<typeof addTodoThunk>>
+export type HandleDeleteTodoFunctionType = ToObjectType<Parameters<typeof deleteTodoThunk>>
 
 export const HomeContainer: React.FC = () => {
   const todos = useAppSelector(todoSelector)
@@ -19,14 +20,29 @@ export const HomeContainer: React.FC = () => {
     dispatch(fetchUsersThunk())
   }, [])
 
-  const handleSaveTodo = (data: HandleSaveTodoParametersType) => {
+  const handleSaveTodo = ({
+    email,
+    user,
+    description,
+    label,
+    name,
+  }: HandleSaveTodoParametersType) => {
     dispatch(
       addTodoThunk({
-        email: data.email,
-        user: data.user,
-        description: data.description,
-        label: data.label,
-        name: data.name,
+        email,
+        user,
+        description,
+        label,
+        name,
+      }),
+    )
+  }
+
+  const handleDeleteTodo = ({ idTodo, idInfo }: HandleDeleteTodoFunctionType) => {
+    dispatch(
+      deleteTodoThunk({
+        idTodo,
+        idInfo,
       }),
     )
   }
@@ -40,7 +56,7 @@ export const HomeContainer: React.FC = () => {
         <AddTodo saveTodo={handleSaveTodo} />
         <UserList userList={users.list} />
       </div>
-      <TodoList todoList={todoList} />
+      <TodoList deleteTodo={handleDeleteTodo} todoList={todoList} />
     </main>
   )
 }

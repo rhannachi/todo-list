@@ -14,4 +14,5 @@ type InfoApiType = {
 type TodoType = Omit<TodoApiType, '_id'> &
   Omit<InfoApiType, '_id' | 'todoId'> & {
     id: string
+    idInfo: string
   }

@@ -88,6 +88,17 @@ body {
     background: #eeeeee;
 }
 
+.todo-item > .delete-icon {
+    position: absolute;
+    margin-top: -18px;
+    margin-left: 181px;
+    color: white;
+    border: 1px solid red;
+    background-color: red;
+    padding: 2px;
+    cursor: pointer;
+}
+
 .container-add-todo {
     display: flex;
     justify-content: space-between;

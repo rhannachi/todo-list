@@ -1,13 +1,31 @@
 import React from 'react'
+import { HandleDeleteTodoFunctionType } from '../containers'
 
-type TodoItemProps = Omit<TodoType, 'userId'> & { user?: UserType }
+type DeleteTodoFunctionType = {
+  deleteTodo: ({ idTodo, idInfo }: HandleDeleteTodoFunctionType) => void
+}
+
+type TodoItemProps = Omit<TodoType, 'userId'> & {
+  user?: UserType
+}
 
 export type TodoListProps = {
   todoList: TodoItemProps[]
 }
 
-const TodoItem: React.FC<TodoItemProps> = ({ name, label, description, user }) => (
+const TodoItem: React.FC<TodoItemProps & DeleteTodoFunctionType> = ({
+  id,
+  idInfo,
+  name,
+  label,
+  description,
+  user,
+  deleteTodo,
+}) => (
   <div className='todo-item'>
+    <div className='delete-icon' onClick={() => deleteTodo({ idTodo: id, idInfo })}>
+      X
+    </div>
     <h3>{name}</h3>
     <div>{label}</div>
     <div>{description}</div>
@@ -16,13 +34,16 @@ const TodoItem: React.FC<TodoItemProps> = ({ name, label, description, user }) =
   </div>
 )
 
-export const TodoList: React.FC<TodoListProps> = ({ todoList }) => {
+export const TodoList: React.FC<TodoListProps & DeleteTodoFunctionType> = ({
+  todoList,
+  deleteTodo,
+}) => {
   return (
     <div className='container-todo'>
       <div className='grid-todo'>
         <h1>TODO</h1>
         {todoList.map((item) => (
-          <TodoItem key={item.id} {...item} />
+          <TodoItem key={item.id} {...item} deleteTodo={deleteTodo} />
         ))}
       </div>
       <div className='grid-todo' style={{ margin: '0 10px 0 10px' }}>

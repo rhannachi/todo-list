@@ -88,3 +88,43 @@ export const addInfoApi = async (
     return handleErrorApi(e, 'Error addInfoApi')
   }
 }
+
+/**
+ * DeleteInfoApi
+ */
+type DeleteInfoApiResponseType = {
+  _id: string
+}
+export const deleteInfoApi = async (id: string): Promise<DeleteInfoApiResponseType | Error> => {
+  try {
+    const response: AxiosResponse<DeleteInfoApiResponseType> = await axios.delete(
+      infoBaseUrl + '/delete-info/' + id,
+    )
+    if (response.status !== 200 || !response.data) {
+      throw Error('Failed to delete info')
+    }
+    return response.data
+  } catch (e) {
+    return handleErrorApi(e, 'Error deleteInfoApi')
+  }
+}
+
+/**
+ * DeleteTodoApi
+ */
+type DeleteTodoApiResponseType = {
+  _id: string
+}
+export const deleteTodoApi = async (id: string): Promise<DeleteTodoApiResponseType | Error> => {
+  try {
+    const response: AxiosResponse<DeleteTodoApiResponseType> = await axios.delete(
+      todoBaseUrl + '/delete-todo/' + id,
+    )
+    if (response.status !== 200 || !response.data) {
+      throw Error('Failed to delete info')
+    }
+    return response.data
+  } catch (e) {
+    return handleErrorApi(e, 'Error deleteTodoApi')
+  }
+}
