@@ -1,0 +1,17 @@
+{
+  "name": "todo-list",
+  "repository": "https://github.com/rhannachi/todo-list",
+  "author": "rhannachi",
+  "license": "MIT",
+  "scripts": {
+    "server:start": "concurrently --kill-others \"cd server-todo && pnpm start\" \"cd server-info && pnpm start\" \"cd server-user && pnpm start\"",
+    "client:start": "cd client && pnpm start"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "engines" : {
+    "npm" : ">=8.19.3 <9.0.0",
+    "node" : ">=16.19.1 <17.0.0"
+  }
+}
