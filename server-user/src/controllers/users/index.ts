@@ -29,16 +29,19 @@ export const getUser = async (req: Request, res: Response): Promise<void> => {
 export const addUser = async (req: Request, res: Response): Promise<void> => {
     try {
         const body = req.body as Pick<IUser, "name" | "email">
-      const todo: IUser = new User({
-        name: body.name,
-          email: body.email,
-      })
-  
-      const newUser: IUser = await todo.save()
+        let user = await User.findOne({email: body.email})
 
-      res
-        .status(200)
-        .json({ user: newUser })
+        if (!user) {
+            const todo: IUser = new User({
+                name: body.name,
+                email: body.email,
+            })
+            user = await todo.save()
+        }
+
+        res
+            .status(200)
+            .json({ user })
     } catch (error) {
       throw error
     }
