@@ -1,13 +1,10 @@
 import React, { useEffect } from 'react'
-import { useAppDispatch, useAppSelector } from '../store'
-import { addTodoThunk, deleteTodoThunk, fetchTodosThunk, todoSelector } from '../store/todo'
-import { fetchUsersThunk, userSelector } from '../store/user'
+import { todoSelector, useAppDispatch, useAppSelector, userSelector } from '../store'
+import { addTodoThunk, deleteTodoThunk, fetchTodosThunk } from '../store/todo'
+import { fetchUsersThunk } from '../store/user'
 import { AddTodo, TodoList, UserList } from '../components'
 import { todoListPropsMapper } from './home.mapper'
-import { ToObjectType } from '../helper'
-
-export type HandleSaveTodoParametersType = ToObjectType<Parameters<typeof addTodoThunk>>
-export type HandleDeleteTodoFunctionType = ToObjectType<Parameters<typeof deleteTodoThunk>>
+import { HandleDeleteTodoFunctionType, HandleSaveTodoParametersType } from '../store/type'
 
 export const HomeContainer: React.FC = () => {
   const todos = useAppSelector(todoSelector)

@@ -1,5 +1,5 @@
 import React from 'react'
-import { HandleDeleteTodoFunctionType } from '../containers'
+import { HandleDeleteTodoFunctionType } from '../store/type'
 
 type DeleteTodoFunctionType = {
   deleteTodo: ({ idTodo, idInfo }: HandleDeleteTodoFunctionType) => void

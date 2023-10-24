@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import { clearEmpties } from '../helper'
-import { HandleSaveTodoParametersType } from '../containers'
+import { clearEmpties } from './helper'
+import { HandleSaveTodoParametersType } from '../store/type'
 
 type FormDataType = HandleSaveTodoParametersType
 

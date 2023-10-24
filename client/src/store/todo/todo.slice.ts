@@ -1,6 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { addTodoThunk, deleteTodoThunk, fetchTodosThunk } from './todo.thunk'
-import { RootState } from '../../store'
 
 type TodosState = {
   status: 'loading' | 'finished'
@@ -112,5 +111,3 @@ export const todoSlice = createSlice({
     })
   },
 })
-
-export const todoSelector = (state: RootState) => state.todo

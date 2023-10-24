@@ -1,6 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { addUserThunk, fetchUsersThunk } from './user.thunk'
-import { RootState } from '../../store'
 
 type TodosState = {
   status: 'loading' | 'finished'
@@ -96,5 +95,3 @@ export const userSlice = createSlice({
     })
   },
 })
-
-export const userSelector = (state: RootState) => state.user
