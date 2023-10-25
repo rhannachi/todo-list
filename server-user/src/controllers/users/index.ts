@@ -46,4 +46,16 @@ export const addUser = async (req: Request, res: Response): Promise<void> => {
       throw error
     }
   }
-  
+
+export const deleteUser = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const deletedTodo: IUser | null = await User.findByIdAndRemove(
+            req.params.id
+        )
+        res.status(200).json({
+            _id: deletedTodo?._id,
+        })
+    } catch (error) {
+        throw error
+    }
+}
