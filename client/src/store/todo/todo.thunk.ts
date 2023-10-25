@@ -56,7 +56,7 @@ export const fetchTodosThunk = createAsyncThunk<TodoType[], undefined, RejectTyp
  * AddTodo API
  */
 
-type AddTodoThunkPayloadType = {
+export type AddTodoThunkPayloadType = {
   name: string
   label: string
   description: string
@@ -119,7 +119,7 @@ export const addTodoThunk = createAsyncThunk<TodoType, AddTodoThunkPayloadType, 
  * DeleteTodo API
  */
 
-type DeleteTodoThunkPayloadType = {
+export type DeleteTodoThunkPayloadType = {
   idTodo: string
   idInfo: string
 }

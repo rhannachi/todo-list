@@ -1,10 +1,15 @@
 import React, { useEffect } from 'react'
 import { todoSelector, useAppDispatch, useAppSelector, userSelector } from '../store'
-import { addTodoThunk, deleteTodoThunk, fetchTodosThunk } from '../store/todo'
+import {
+  addTodoThunk,
+  AddTodoThunkPayloadType,
+  deleteTodoThunk,
+  DeleteTodoThunkPayloadType,
+  fetchTodosThunk,
+} from '../store/todo'
 import { fetchUsersThunk } from '../store/user'
 import { AddTodo, TodoList, UserList } from '../components'
 import { todoListPropsMapper } from './home.mapper'
-import { HandleDeleteTodoFunctionType, HandleSaveTodoParametersType } from '../store/type'
 
 export const HomeContainer: React.FC = () => {
   const todos = useAppSelector(todoSelector)
@@ -17,13 +22,7 @@ export const HomeContainer: React.FC = () => {
     dispatch(fetchUsersThunk())
   }, [])
 
-  const handleSaveTodo = ({
-    email,
-    user,
-    description,
-    label,
-    name,
-  }: HandleSaveTodoParametersType) => {
+  const handleSaveTodo = ({ email, user, description, label, name }: AddTodoThunkPayloadType) => {
     dispatch(
       addTodoThunk({
         email,
@@ -35,7 +34,7 @@ export const HomeContainer: React.FC = () => {
     )
   }
 
-  const handleDeleteTodo = ({ idTodo, idInfo }: HandleDeleteTodoFunctionType) => {
+  const handleDeleteTodo = ({ idTodo, idInfo }: DeleteTodoThunkPayloadType) => {
     dispatch(
       deleteTodoThunk({
         idTodo,

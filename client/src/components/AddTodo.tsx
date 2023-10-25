@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import { clearEmpties } from './helper'
-import { HandleSaveTodoParametersType } from '../store/type'
+import { AddTodoThunkPayloadType } from '../store/todo'
 
-type FormDataType = HandleSaveTodoParametersType
+type FormDataType = AddTodoThunkPayloadType
 
 type AddTodoProps = {
-  saveTodo: (data: HandleSaveTodoParametersType) => void
+  saveTodo: (data: AddTodoThunkPayloadType) => void
 }
 
 const validateForm = (form?: Partial<FormDataType>) => {

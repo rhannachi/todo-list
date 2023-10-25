@@ -1,8 +1,8 @@
 import React from 'react'
-import { HandleDeleteTodoFunctionType } from '../store/type'
+import { DeleteTodoThunkPayloadType } from '../store/todo'
 
 type DeleteTodoFunctionType = {
-  deleteTodo: ({ idTodo, idInfo }: HandleDeleteTodoFunctionType) => void
+  deleteTodo: ({ idTodo, idInfo }: DeleteTodoThunkPayloadType) => void
 }
 
 type TodoItemProps = Omit<TodoType, 'userId'> & {
