@@ -50,10 +50,9 @@ export const addTodo = async (req: Request, res: Response): Promise<void> => {
             userId: body.userId,
         })
 
-        const newTodo = await todo.save()
-        if (!newTodo) {
+        const newTodo = await todo.save().catch(() => {
             throw new ErrorApi(404, 'Todo save failed')
-        }
+        })
 
         res
             .status(200)
