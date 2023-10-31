@@ -37,11 +37,13 @@ export const getUsers = async (req: Request, res: Response): Promise<void> => {
 export const getUser = async (req: Request, res: Response): Promise<void> => {
     try {
         const id = req.params.id
-        const user = await User.findById(id).catch(() => {
-            res.status(200).json(undefined)
-        })
+        const user = await User.findById(id).catch(() => undefined)
 
-        res.status(200).json({ user })
+        if (user) {
+            res.status(200).json({ user })
+        } else {
+            res.status(200).json()
+        }
     } catch (error) {
         const [status, message] = handlerErrorApi(error)
         res.status(status).json({ message });
