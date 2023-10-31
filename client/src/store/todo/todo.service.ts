@@ -23,6 +23,7 @@ export const fetchTodosApi = async (): Promise<FetchTodosApiResponseType | Error
     return handleErrorApi(e, 'Error fetchTodosApi')
   }
 }
+
 /**
  * addTodoApi
  */
@@ -65,6 +66,7 @@ export const fetchInfoApi = async (userId: string): Promise<FetchInfoApiResponse
     return handleErrorApi(e, 'Error fetchInfoApi')
   }
 }
+
 /**
  * addInfoApi
  */

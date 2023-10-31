@@ -16,14 +16,7 @@ const initialState: TodosState = {
 export const todoSlice = createSlice({
   name: 'todo',
   initialState,
-  reducers: {
-    // increment(state) {
-    //     state.value += 1;
-    // },
-    // decrement(state) {
-    //     state.value -= 1;
-    // },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     /** Fetch TODOS **/
     builder.addCase(fetchTodosThunk.pending, (state) => {

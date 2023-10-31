@@ -20,6 +20,7 @@ export const fetchUsersApi = async (): Promise<FetchUsersApiResponseType | Error
     return handleErrorApi(e, 'Error fetchUserApi')
   }
 }
+
 /**
  * addUserApi
  */
