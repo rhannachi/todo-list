@@ -1,9 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { addUserThunk, fetchUsersThunk } from './user.thunk'
+import { createUserThunk, fetchUsersThunk } from './user.thunk'
+import { UserType } from './user.type'
+import { ErrorType } from '../../helper'
 
 type TodosState = {
   status: 'loading' | 'finished'
-  error: string | undefined
+  error: ErrorType | undefined
   list: UserType[]
 }
 
@@ -38,7 +40,9 @@ export const userSlice = createSlice({
       if (payload) {
         newState = {
           ...newState,
-          error: payload.message,
+          error: {
+            ...payload,
+          },
         }
       }
       return {
@@ -47,14 +51,14 @@ export const userSlice = createSlice({
       }
     })
     /** ADD User **/
-    builder.addCase(addUserThunk.pending, (state) => {
+    builder.addCase(createUserThunk.pending, (state) => {
       return {
         ...state,
         status: 'loading',
         error: undefined,
       }
     })
-    builder.addCase(addUserThunk.fulfilled, (state, { payload }) => {
+    builder.addCase(createUserThunk.fulfilled, (state, { payload }) => {
       const newState: TodosState = {
         ...state,
         status: 'finished',
@@ -73,12 +77,12 @@ export const userSlice = createSlice({
         list: [...state.list],
       }
     })
-    builder.addCase(addUserThunk.rejected, (state, { payload }) => {
+    builder.addCase(createUserThunk.rejected, (state, { payload }) => {
       let newState = { ...state }
       if (payload) {
         newState = {
           ...newState,
-          error: payload.message,
+          error: { ...payload },
         }
       }
       return {

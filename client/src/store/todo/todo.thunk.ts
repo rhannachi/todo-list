@@ -8,8 +8,9 @@ import {
   deleteInfoApi,
 } from './todo.service'
 import { TodoTypeMapper } from './todo.mapper'
-import { addUserThunk } from '../user'
+import { createUserThunk } from '../user'
 import { RejectType, ToObjectType } from '../../helper'
+import { UserType } from '../user/user.type'
 
 /**
  * FetchTodos API
@@ -73,7 +74,7 @@ export const addTodoThunk = createAsyncThunk<TodoType, AddTodoThunkPayloadType, 
   'todos/add',
   async (data, thunkApi) => {
     const userResponse = await thunkApi.dispatch(
-      addUserThunk({
+      createUserThunk({
         name: data.user,
         email: data.email,
       }),

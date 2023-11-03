@@ -30,7 +30,12 @@ export const getUsers = async (req: Request, res: Response): Promise<void> => {
         res.status(200).json({ users })
     } catch (error) {
         const [status, message] = handlerErrorApi(error)
-        res.status(status).json({ message });
+        res.status(status).json({
+            error: {
+                status,
+                message
+            }
+        });
     }
 }
 
@@ -46,7 +51,12 @@ export const getUser = async (req: Request, res: Response): Promise<void> => {
         }
     } catch (error) {
         const [status, message] = handlerErrorApi(error)
-        res.status(status).json({ message });
+        res.status(status).json({
+            error: {
+                status,
+                message
+            }
+        });
     }
 }
 
@@ -78,7 +88,12 @@ export const addUser = async (req: Request, res: Response): Promise<void> => {
             .json({ user })
     } catch (error) {
         const [status, message] = handlerErrorApi(error)
-        res.status(status).json({ message });
+        res.status(status).json({
+            error: {
+                status,
+                message
+            }
+        });
     }
   }
 
@@ -95,6 +110,11 @@ export const deleteUser = async (req: Request, res: Response): Promise<void> => 
         })
     } catch (error) {
         const [status, message] = handlerErrorApi(error)
-        res.status(status).json({ message });
+        res.status(status).json({
+            error: {
+                status,
+                message
+            }
+        });
     }
 }

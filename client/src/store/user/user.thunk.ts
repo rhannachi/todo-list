@@ -1,40 +1,35 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import { addUserApi, fetchUsersApi } from './user.service'
-import { userMapper, usersMapper } from './user.mapper'
-import { RejectType, ToObjectType } from '../../helper'
+import { createUserApi, fetchUsersApi } from './user.service'
+import { RejectType2, ToObjectType } from '../../helper'
+import { UserType } from './user.type'
 
-export const fetchUsersThunk = createAsyncThunk<UserType[], undefined, RejectType>(
+export const fetchUsersThunk = createAsyncThunk<UserType[], undefined, RejectType2>(
   'users/fetch',
   async (_, thunkApi) => {
     const response = await fetchUsersApi()
 
-    if (response instanceof Error) {
-      return thunkApi.rejectWithValue({
-        message: response.message,
-      })
+    if ('error' in response) {
+      return thunkApi.rejectWithValue({ error: response.error })
     }
-    return usersMapper(response.users)
+
+    return response
   },
 )
 /**
  * AddTodo API
  */
-export const addUserThunk = createAsyncThunk<
+export const createUserThunk = createAsyncThunk<
   UserType,
-  Pick<UserType, 'name' | 'email'>,
-  RejectType
+  ToObjectType<Parameters<typeof createUserApi>>,
+  RejectType2
 >('user/add', async (user, thunkApi) => {
-  const addUserApiPayload: ToObjectType<Parameters<typeof addUserApi>> = {
+  const response = await createUserApi({
     name: user.name,
     email: user.email,
-  }
+  })
 
-  const response = await addUserApi(addUserApiPayload)
-
-  if (response instanceof Error) {
-    return thunkApi.rejectWithValue({
-      message: response.message,
-    })
+  if ('error' in response) {
+    return thunkApi.rejectWithValue({ error: response.error })
   }
-  return userMapper(response.user)
+  return response
 })

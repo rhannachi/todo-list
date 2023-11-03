@@ -1,4 +1,5 @@
 import { TodoListProps } from '../components'
+import { UserType } from '../store/user/user.type'
 
 export const todoListPropsMapper = (
   todos: TodoType[],

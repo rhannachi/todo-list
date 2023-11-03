@@ -1,9 +1,11 @@
-type UserApiType = {
-  _id: string
-  name: string
-  email: string
-}
-/* eslint-disable @typescript-eslint/no-unused-vars*/
-type UserType = Pick<UserApiType, 'name' | 'email'> & {
+import { z } from 'zod'
+
+export const UserApiSchema = z.object({
+  _id: z.string(),
+  name: z.string(),
+  email: z.string(),
+})
+export type UserApiType = z.infer<typeof UserApiSchema>
+export type UserType = Omit<UserApiType, '_id'> & {
   id: string
 }

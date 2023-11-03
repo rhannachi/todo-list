@@ -1,5 +1,6 @@
 import React from 'react'
 import { DeleteTodoThunkPayloadType } from '../store/todo'
+import { UserType } from '../store/user/user.type'
 
 type DeleteTodoFunctionType = {
   deleteTodo: ({ idTodo, idInfo }: DeleteTodoThunkPayloadType) => void
