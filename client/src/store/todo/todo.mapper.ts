@@ -1,10 +1,10 @@
-import { InfoApiType, TodoApiType, TodoInfoType, TodoType } from './todo.type'
+import { InfoApiType, InfoType, TodoApiType, TodoInfoType, TodoType } from './todo.type'
 
-export const TodoTypeMapper = (todo: TodoType | TodoApiType, info: InfoApiType): TodoInfoType => ({
-  id: '_id' in todo ? todo._id : todo.id, // TODO remove this !!!!!!
+export const todoInfoMapper = (todo: TodoType, info: InfoType): TodoInfoType => ({
+  id: todo.id,
   name: todo.name,
   userId: todo.userId,
-  idInfo: info._id,
+  idInfo: info.id,
   label: info.label,
   description: info.description,
 })
@@ -12,12 +12,22 @@ export const TodoTypeMapper = (todo: TodoType | TodoApiType, info: InfoApiType):
 /**
  *
  */
-
-const todoMapper = (todo: TodoApiType): TodoType => ({
-  id: todo._id,
-  name: todo.name,
-  userId: todo.userId,
+const todoMapper = ({ _id, ...rest }: TodoApiType): TodoType => ({
+  id: _id,
+  ...rest,
 })
 const todosMapper = (todos: TodoApiType[]): TodoType[] => todos.map(todoMapper)
 type TodosApiTransformType = ({ todos }: { todos: TodoApiType[] }) => TodoType[]
 export const todosApiTransform: TodosApiTransformType = ({ todos }) => todosMapper(todos)
+type TodoApiTransformType = ({ todo }: { todo: TodoApiType }) => TodoType
+export const todoApiTransform: TodoApiTransformType = ({ todo }) => todoMapper(todo)
+
+/**
+ *
+ */
+const infoMapper = ({ _id, ...rest }: InfoApiType): InfoType => ({
+  id: _id,
+  ...rest,
+})
+type InfoApiTransformType = ({ info }: { info: InfoApiType }) => InfoType
+export const infoApiTransform: InfoApiTransformType = ({ info }) => infoMapper(info)

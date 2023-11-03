@@ -10,20 +10,6 @@ export type ToObjectType<T> = T extends readonly Record<
   ? { [P in Key]: Val }
   : never
 
-/**
- * TODO remove => handleErrorApi and RejectType
- */
-export const handleErrorApi = (e: unknown, message: string): Error => {
-  if (e instanceof Error) {
-    return new Error(e.message)
-  }
-  return new Error(message)
-}
-
-/**
- * End TODO remove
- */
-
 const isAxiosError = <T>(error: unknown): error is AxiosError<T> => axios.isAxiosError(error)
 
 type ErrorApiType = {
@@ -32,8 +18,17 @@ type ErrorApiType = {
     message: string
   }
 }
+export type ErrorType = {
+  error: {
+    message: string
+    stack?: string
+  }
+}
+export type RejectType = {
+  rejectValue: ErrorType
+}
 
-export const handleErrorApi2 = (error: unknown) => {
+export const handleErrorApi = (error: unknown) => {
   // console.log('ZodiosError ==>', error instanceof ZodiosError)
   // console.log('ZodError ==>', error instanceof ZodError)
   // console.log('AxiosError ==>', error instanceof AxiosError)
@@ -55,16 +50,5 @@ export const handleErrorApi2 = (error: unknown) => {
       message,
       stack,
     },
-  }
-}
-
-export type RejectType2 = {
-  rejectValue: ErrorType
-}
-
-export type ErrorType = {
-  error: {
-    message: string
-    stack?: string
   }
 }

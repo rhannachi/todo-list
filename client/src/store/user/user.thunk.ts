@@ -1,9 +1,9 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { createUserApi, fetchUsersApi } from './user.service'
-import { RejectType2, ToObjectType } from '../../helper'
+import { RejectType, ToObjectType } from '../../helper'
 import { UserType } from './user.type'
 
-export const fetchUsersThunk = createAsyncThunk<UserType[], undefined, RejectType2>(
+export const fetchUsersThunk = createAsyncThunk<UserType[], undefined, RejectType>(
   'users/fetch',
   async (_, thunkApi) => {
     const response = await fetchUsersApi()
@@ -21,7 +21,7 @@ export const fetchUsersThunk = createAsyncThunk<UserType[], undefined, RejectTyp
 export const createUserThunk = createAsyncThunk<
   UserType,
   ToObjectType<Parameters<typeof createUserApi>>,
-  RejectType2
+  RejectType
 >('user/add', async (user, thunkApi) => {
   const response = await createUserApi({
     name: user.name,

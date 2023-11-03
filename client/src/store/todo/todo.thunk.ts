@@ -7,52 +7,51 @@ import {
   deleteTodoApi,
   deleteInfoApi,
 } from './todo.service'
-import { TodoTypeMapper } from './todo.mapper'
+import { todoInfoMapper } from './todo.mapper'
 import { createUserThunk } from '../user'
-import { RejectType2, ToObjectType } from '../../helper'
+import { RejectType, ToObjectType } from '../../helper'
 import { UserType } from '../user/user.type'
-import { InfoApiType, TodoInfoType } from './todo.type'
+import { InfoType, TodoInfoType } from './todo.type'
 
 /**
  * FetchTodos API
  */
-export const fetchTodosThunk = createAsyncThunk<TodoInfoType[], undefined, RejectType2>(
+export const fetchTodosThunk = createAsyncThunk<TodoInfoType[], undefined, RejectType>(
   'todos/fetch',
   async (_, thunkApi) => {
     try {
       const todosResponse = await fetchTodosApi()
 
       if ('error' in todosResponse) {
-        return thunkApi.rejectWithValue({ error: todosResponse.error })
+        return thunkApi.rejectWithValue(todosResponse)
       }
 
       const fetchInfosApiPromise = todosResponse.map(({ id }) => fetchInfoApi(id))
       const infosResponse = (await Promise.all(fetchInfosApiPromise)).reduce(
-        (acc: InfoApiType[], item) => {
-          if (item instanceof Error || !item) {
+        (acc: InfoType[], item) => {
+          if ('error' in item) {
             return acc
           }
-          return [...acc, item.info]
+          return [...acc, item]
         },
         [],
       )
 
-      const todos = todosResponse.reduce((acc: TodoInfoType[], todo) => {
+      const todosInfo = todosResponse.reduce((acc: TodoInfoType[], todo) => {
         const info = infosResponse.find(({ todoId }) => todoId === todo.id)
         if (info) {
-          return [...acc, TodoTypeMapper(todo, info)]
+          return [...acc, todoInfoMapper(todo, info)]
         }
 
         return acc
       }, [])
 
-      return todos
+      return todosInfo
     } catch (e) {
-      // TODO Error-handling
-      console.log('rejecteeeed')
       return thunkApi.rejectWithValue({
         error: {
-          message: `${e}`,
+          message: 'Unable to retrieve the list of Todos',
+          stack: `${e}`,
         },
       })
     }
@@ -71,7 +70,7 @@ export type AddTodoThunkPayloadType = {
   user: string
 }
 
-export const addTodoThunk = createAsyncThunk<TodoInfoType, AddTodoThunkPayloadType, RejectType2>(
+export const addTodoThunk = createAsyncThunk<TodoInfoType, AddTodoThunkPayloadType, RejectType>(
   'todos/add',
   async (data, thunkApi) => {
     const userResponse = await thunkApi.dispatch(
@@ -96,31 +95,23 @@ export const addTodoThunk = createAsyncThunk<TodoInfoType, AddTodoThunkPayloadTy
 
     const todoResponse = await addTodoApi(addTodoApiPayload)
 
-    if (todoResponse instanceof Error) {
-      return thunkApi.rejectWithValue({
-        error: {
-          message: todoResponse.message,
-        },
-      })
+    if ('error' in todoResponse) {
+      return thunkApi.rejectWithValue(todoResponse)
     }
 
     const addInfoApiPayload: ToObjectType<Parameters<typeof addInfoApi>> = {
       label: data.label,
       description: data.description,
-      todoId: todoResponse.todo._id,
+      todoId: todoResponse.id,
     }
 
     const infoResponse = await addInfoApi(addInfoApiPayload)
 
-    if (infoResponse instanceof Error) {
-      return thunkApi.rejectWithValue({
-        error: {
-          message: infoResponse.message,
-        },
-      })
+    if ('error' in infoResponse) {
+      return thunkApi.rejectWithValue(infoResponse)
     }
 
-    return TodoTypeMapper(todoResponse.todo, infoResponse.info)
+    return todoInfoMapper(todoResponse, infoResponse)
   },
 )
 
@@ -136,26 +127,18 @@ export type DeleteTodoThunkPayloadType = {
 export const deleteTodoThunk = createAsyncThunk<
   { id: string },
   DeleteTodoThunkPayloadType,
-  RejectType2
+  RejectType
 >('todos/delete', async ({ idTodo, idInfo }, thunkApi) => {
   const todoResponse = await deleteTodoApi(idTodo)
 
-  if (todoResponse instanceof Error) {
-    return thunkApi.rejectWithValue({
-      error: {
-        message: todoResponse.message,
-      },
-    })
+  if ('error' in todoResponse) {
+    return thunkApi.rejectWithValue(todoResponse)
   }
 
   const infoResponse = await deleteInfoApi(idInfo)
 
-  if (infoResponse instanceof Error) {
-    return thunkApi.rejectWithValue({
-      error: {
-        message: infoResponse.message,
-      },
-    })
+  if ('error' in infoResponse) {
+    return thunkApi.rejectWithValue(infoResponse)
   }
 
   return { id: idTodo }
