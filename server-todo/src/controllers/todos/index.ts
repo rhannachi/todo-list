@@ -30,7 +30,12 @@ export const getTodos = async (req: Request, res: Response): Promise<void> => {
         res.status(200).json({ todos })
     } catch (error) {
         const [status, message] = handlerErrorApi(error)
-        res.status(status).json({ message });
+        res.status(status).json({
+            error: {
+                status,
+                message
+            }
+        });
     }
 }
 
@@ -59,7 +64,12 @@ export const addTodo = async (req: Request, res: Response): Promise<void> => {
             .json({ todo: newTodo })
     } catch (error) {
         const [status, message] = handlerErrorApi(error)
-        res.status(status).json({ message });
+        res.status(status).json({
+            error: {
+                status,
+                message
+            }
+        });
     }
   }
 
@@ -76,6 +86,11 @@ export const deleteTodo = async (req: Request, res: Response): Promise<void> => 
         })
     } catch (error) {
         const [status, message] = handlerErrorApi(error)
-        res.status(status).json({ message });
+        res.status(status).json({
+            error: {
+                status,
+                message
+            }
+        });
     }
 }

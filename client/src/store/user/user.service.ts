@@ -14,7 +14,7 @@ export const userService = new Zodios(baseUrl, [
   {
     method: 'get',
     path: '/users',
-    alias: 'getUsers',
+    alias: 'fetchUsers',
     description: 'Get all users',
     parameters: [],
     response: z
@@ -49,7 +49,7 @@ export const userService = new Zodios(baseUrl, [
  */
 export const fetchUsersApi = async (): Promise<UserType[] | ErrorType> => {
   try {
-    return await userService.getUsers()
+    return await userService.fetchUsers()
   } catch (error) {
     return handleErrorApi2(error)
   }

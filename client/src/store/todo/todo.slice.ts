@@ -1,10 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { addTodoThunk, deleteTodoThunk, fetchTodosThunk } from './todo.thunk'
+import { TodoInfoType } from './todo.type'
+import { ErrorType } from '../../helper'
 
 type TodosState = {
   status: 'loading' | 'finished'
-  error: string | undefined
-  list: TodoType[]
+  error: ErrorType | undefined
+  list: TodoInfoType[]
 }
 
 const initialState: TodosState = {
@@ -38,7 +40,7 @@ export const todoSlice = createSlice({
       if (payload) {
         newState = {
           ...newState,
-          error: payload.message,
+          error: { ...payload },
         }
       }
       return {
@@ -66,7 +68,7 @@ export const todoSlice = createSlice({
       if (payload) {
         newState = {
           ...newState,
-          error: payload.message,
+          error: { ...payload },
         }
       }
       return {
@@ -94,7 +96,7 @@ export const todoSlice = createSlice({
       if (payload) {
         newState = {
           ...newState,
-          error: payload.message,
+          error: { ...payload },
         }
       }
       return {

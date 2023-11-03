@@ -1,18 +1,26 @@
-type TodoApiType = {
-  _id: string
-  name: string
-  userId: string
-}
+import { z } from 'zod'
 
-type InfoApiType = {
-  _id: string
-  label: string
-  description: string
-  todoId: string
+export const todoApiSchema = z.object({
+  _id: z.string(),
+  name: z.string(),
+  userId: z.string(),
+})
+export const infoApiSchema = z.object({
+  _id: z.string(),
+  label: z.string(),
+  description: z.string(),
+  todoId: z.string(),
+})
+
+export type TodoApiType = z.infer<typeof todoApiSchema>
+export type InfoApiType = z.infer<typeof infoApiSchema>
+export type TodoType = Omit<TodoApiType, '_id'> & {
+  id: string
 }
-/* eslint-disable @typescript-eslint/no-unused-vars*/
-type TodoType = Omit<TodoApiType, '_id'> &
-  Omit<InfoApiType, '_id' | 'todoId'> & {
-    id: string
+export type InfoType = Omit<InfoApiType, '_id'> & {
+  id: string
+}
+export type TodoInfoType = TodoType &
+  Omit<InfoType, 'id' | 'todoId'> & {
     idInfo: string
   }

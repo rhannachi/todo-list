@@ -19,11 +19,7 @@ export const handleErrorApi = (e: unknown, message: string): Error => {
   }
   return new Error(message)
 }
-export type RejectType = {
-  rejectValue: {
-    message: string
-  }
-}
+
 /**
  * End TODO remove
  */

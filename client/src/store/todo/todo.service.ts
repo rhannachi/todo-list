@@ -1,27 +1,64 @@
 import axios, { AxiosResponse } from 'axios'
-import { handleErrorApi } from '../../helper'
+import { ErrorType, handleErrorApi, handleErrorApi2 } from '../../helper'
+import { Zodios } from '@zodios/core'
+import { z } from 'zod'
+import { InfoApiType, todoApiSchema, TodoApiType, TodoType } from './todo.type'
+import { todosApiTransform } from './todo.mapper'
 
 const todoBaseUrl = 'http://localhost:4001' as const
 const infoBaseUrl = 'http://localhost:4003' as const
 
+const todoService = new Zodios(todoBaseUrl, [
+  {
+    method: 'get',
+    path: '/todos',
+    alias: 'fetchTodos',
+    description: 'Get all todos',
+    parameters: [],
+    response: z
+      .object({
+        todos: z.array(todoApiSchema),
+      })
+      .transform(todosApiTransform),
+  },
+])
+
+// export const infoService = new Zodios(todoBaseUrl, [
+//   {
+//     method: 'get',
+//     path: '/users',
+//     alias: 'fetchUsers',
+//     description: 'Get all users',
+//     parameters: [],
+//     response: z
+//       .object({
+//         users: z.array(UserApiSchema),
+//       })
+//       .transform(usersApiTransform),
+//   },
+// ])
+
 /**
  * fetchTodosApi
  */
-type FetchTodosApiResponseType = {
-  todos: TodoApiType[]
-}
-export const fetchTodosApi = async (): Promise<FetchTodosApiResponseType | Error> => {
+export const fetchTodosApi = async (): Promise<TodoType[] | ErrorType> => {
   try {
-    const response: AxiosResponse<FetchTodosApiResponseType> = await axios.get(
-      todoBaseUrl + '/todos',
-    )
-    if (response.status !== 200 || !response.data) {
-      throw Error('Failed to fetch todos')
-    }
-    return response.data
-  } catch (e) {
-    return handleErrorApi(e, 'Error fetchTodosApi')
+    return await todoService.fetchTodos()
+  } catch (error) {
+    return handleErrorApi2(error)
   }
+
+  // try {
+  //   const response: AxiosResponse<FetchTodosApiResponseType> = await axios.get(
+  //     todoBaseUrl + '/todos',
+  //   )
+  //   if (response.status !== 200 || !response.data) {
+  //     throw Error('Failed to fetch todos')
+  //   }
+  //   return response.data
+  // } catch (e) {
+  //   return handleErrorApi(e, 'Error fetchTodosApi')
+  // }
 }
 
 /**

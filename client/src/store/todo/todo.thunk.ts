@@ -9,25 +9,24 @@ import {
 } from './todo.service'
 import { TodoTypeMapper } from './todo.mapper'
 import { createUserThunk } from '../user'
-import { RejectType, ToObjectType } from '../../helper'
+import { RejectType2, ToObjectType } from '../../helper'
 import { UserType } from '../user/user.type'
+import { InfoApiType, TodoInfoType } from './todo.type'
 
 /**
  * FetchTodos API
  */
-export const fetchTodosThunk = createAsyncThunk<TodoType[], undefined, RejectType>(
+export const fetchTodosThunk = createAsyncThunk<TodoInfoType[], undefined, RejectType2>(
   'todos/fetch',
   async (_, thunkApi) => {
     try {
       const todosResponse = await fetchTodosApi()
 
-      if (todosResponse instanceof Error) {
-        return thunkApi.rejectWithValue({
-          message: todosResponse.message,
-        })
+      if ('error' in todosResponse) {
+        return thunkApi.rejectWithValue({ error: todosResponse.error })
       }
 
-      const fetchInfosApiPromise = todosResponse.todos.map(({ _id }) => fetchInfoApi(_id))
+      const fetchInfosApiPromise = todosResponse.map(({ id }) => fetchInfoApi(id))
       const infosResponse = (await Promise.all(fetchInfosApiPromise)).reduce(
         (acc: InfoApiType[], item) => {
           if (item instanceof Error || !item) {
@@ -38,8 +37,8 @@ export const fetchTodosThunk = createAsyncThunk<TodoType[], undefined, RejectTyp
         [],
       )
 
-      const todos = todosResponse.todos.reduce((acc: TodoType[], todo) => {
-        const info = infosResponse.find(({ todoId }) => todoId === todo._id)
+      const todos = todosResponse.reduce((acc: TodoInfoType[], todo) => {
+        const info = infosResponse.find(({ todoId }) => todoId === todo.id)
         if (info) {
           return [...acc, TodoTypeMapper(todo, info)]
         }
@@ -52,7 +51,9 @@ export const fetchTodosThunk = createAsyncThunk<TodoType[], undefined, RejectTyp
       // TODO Error-handling
       console.log('rejecteeeed')
       return thunkApi.rejectWithValue({
-        message: `${e}`,
+        error: {
+          message: `${e}`,
+        },
       })
     }
   },
@@ -70,7 +71,7 @@ export type AddTodoThunkPayloadType = {
   user: string
 }
 
-export const addTodoThunk = createAsyncThunk<TodoType, AddTodoThunkPayloadType, RejectType>(
+export const addTodoThunk = createAsyncThunk<TodoInfoType, AddTodoThunkPayloadType, RejectType2>(
   'todos/add',
   async (data, thunkApi) => {
     const userResponse = await thunkApi.dispatch(
@@ -82,7 +83,9 @@ export const addTodoThunk = createAsyncThunk<TodoType, AddTodoThunkPayloadType, 
 
     if (userResponse.type !== 'user/add/fulfilled') {
       return thunkApi.rejectWithValue({
-        message: 'error add user',
+        error: {
+          message: 'error add user',
+        },
       })
     }
 
@@ -95,7 +98,9 @@ export const addTodoThunk = createAsyncThunk<TodoType, AddTodoThunkPayloadType, 
 
     if (todoResponse instanceof Error) {
       return thunkApi.rejectWithValue({
-        message: todoResponse.message,
+        error: {
+          message: todoResponse.message,
+        },
       })
     }
 
@@ -109,7 +114,9 @@ export const addTodoThunk = createAsyncThunk<TodoType, AddTodoThunkPayloadType, 
 
     if (infoResponse instanceof Error) {
       return thunkApi.rejectWithValue({
-        message: infoResponse.message,
+        error: {
+          message: infoResponse.message,
+        },
       })
     }
 
@@ -129,13 +136,15 @@ export type DeleteTodoThunkPayloadType = {
 export const deleteTodoThunk = createAsyncThunk<
   { id: string },
   DeleteTodoThunkPayloadType,
-  RejectType
+  RejectType2
 >('todos/delete', async ({ idTodo, idInfo }, thunkApi) => {
   const todoResponse = await deleteTodoApi(idTodo)
 
   if (todoResponse instanceof Error) {
     return thunkApi.rejectWithValue({
-      message: todoResponse.message,
+      error: {
+        message: todoResponse.message,
+      },
     })
   }
 
@@ -143,7 +152,9 @@ export const deleteTodoThunk = createAsyncThunk<
 
   if (infoResponse instanceof Error) {
     return thunkApi.rejectWithValue({
-      message: infoResponse.message,
+      error: {
+        message: infoResponse.message,
+      },
     })
   }
 
