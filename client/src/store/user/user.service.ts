@@ -1,5 +1,5 @@
 import { Zodios } from '@zodios/core'
-import { ErrorType, handleErrorApi } from '../../helper'
+import { handleError } from '../../helper'
 import { userApiTransform, usersApiTransform } from './user.transform'
 import { UserApiSchema, UserType } from './user.type'
 import { z } from 'zod'
@@ -47,11 +47,11 @@ export const userService = new Zodios(baseUrl, [
 /**
  * fetchUsersApi
  */
-export const fetchUsersApi = async (): Promise<UserType[] | ErrorType> => {
+export const fetchUsersApi = async (): Promise<UserType[]> => {
   try {
     return await userService.fetchUsers()
   } catch (error) {
-    return handleErrorApi(error)
+    throw handleError(error)
   }
 }
 
@@ -60,10 +60,10 @@ export const fetchUsersApi = async (): Promise<UserType[] | ErrorType> => {
  */
 export const createUserApi = async (
   user: z.infer<typeof createUserApiPayloadSchema>,
-): Promise<UserType | ErrorType> => {
+): Promise<UserType> => {
   try {
     return await userService.createUser(user)
   } catch (error) {
-    return handleErrorApi(error)
+    throw handleError(error)
   }
 }

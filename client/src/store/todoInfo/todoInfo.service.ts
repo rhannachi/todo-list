@@ -1,11 +1,8 @@
-import { ErrorType, handleErrorApi } from '../../helper'
 import { Zodios } from '@zodios/core'
 import { z } from 'zod'
-import { infoApiSchema, InfoType, todoApiSchema, TodoType } from './todo.type'
-import { infoApiTransform, todoApiTransform, todosApiTransform } from './todo.mapper'
-
-const todoBaseUrl = 'http://localhost:4001' as const
-const infoBaseUrl = 'http://localhost:4003' as const
+import { handleError } from '../../helper'
+import { infoApiSchema, InfoType, todoApiSchema, TodoType } from './todoInfo.type'
+import { infoApiTransform, todoApiTransform, todosApiTransform } from './todoInfo.transform'
 
 const createTodoApiPayloadSchema = z.object({
   name: z.string(),
@@ -16,7 +13,7 @@ const createInfoApiPayloadSchema = z.object({
   description: z.string(),
   todoId: z.string(),
 })
-const todoService = new Zodios(todoBaseUrl, [
+const todoService = new Zodios('http://localhost:4001', [
   {
     method: 'get',
     path: '/todos',
@@ -64,18 +61,21 @@ const todoService = new Zodios(todoBaseUrl, [
   },
 ])
 
-export const infoService = new Zodios(infoBaseUrl, [
+const infoService = new Zodios('http://localhost:4003', [
   {
     method: 'get',
     path: '/info-by-todo-id/:id',
     alias: 'fetchInfo',
     description: 'Get info by todoId',
     parameters: [],
-    response: z
-      .object({
-        info: infoApiSchema,
-      })
-      .transform(infoApiTransform),
+    response: z.union([
+      z.null(),
+      z
+        .object({
+          info: infoApiSchema,
+        })
+        .transform(infoApiTransform),
+    ]),
   },
   {
     method: 'post',
@@ -114,11 +114,11 @@ export const infoService = new Zodios(infoBaseUrl, [
 /**
  * fetchTodosApi
  */
-export const fetchTodosApi = async (): Promise<TodoType[] | ErrorType> => {
+export const fetchTodosApi = async (): Promise<TodoType[]> => {
   try {
     return await todoService.fetchTodos()
   } catch (error) {
-    return handleErrorApi(error)
+    throw handleError(error)
   }
 }
 
@@ -127,21 +127,21 @@ export const fetchTodosApi = async (): Promise<TodoType[] | ErrorType> => {
  */
 export const addTodoApi = async (
   todo: z.infer<typeof createTodoApiPayloadSchema>,
-): Promise<TodoType | ErrorType> => {
+): Promise<TodoType> => {
   try {
     return await todoService.createTodo(todo)
   } catch (error) {
-    return handleErrorApi(error)
+    throw handleError(error)
   }
 }
 /**
  * fetchInfoApi
  */
-export const fetchInfoApi = async (todoId: string): Promise<InfoType | ErrorType> => {
+export const fetchInfoApi = async (todoId: string): Promise<InfoType | null> => {
   try {
     return await infoService.fetchInfo({ params: { id: todoId } })
   } catch (error) {
-    return handleErrorApi(error)
+    throw handleError(error)
   }
 }
 
@@ -150,32 +150,32 @@ export const fetchInfoApi = async (todoId: string): Promise<InfoType | ErrorType
  */
 export const addInfoApi = async (
   info: z.infer<typeof createInfoApiPayloadSchema>,
-): Promise<InfoType | ErrorType> => {
+): Promise<InfoType> => {
   try {
     return await infoService.createInfo(info)
   } catch (error) {
-    return handleErrorApi(error)
+    throw handleError(error)
   }
 }
 
 /**
  * DeleteInfoApi
  */
-export const deleteInfoApi = async (id: string): Promise<{ id: string } | ErrorType> => {
+export const deleteInfoApi = async (id: string): Promise<{ id: string }> => {
   try {
     return await infoService.deleteInfo(undefined, { params: { id } })
   } catch (error) {
-    return handleErrorApi(error)
+    throw handleError(error)
   }
 }
 
 /**
  * DeleteTodoApi
  */
-export const deleteTodoApi = async (id: string): Promise<{ id: string } | ErrorType> => {
+export const deleteTodoApi = async (id: string): Promise<{ id: string }> => {
   try {
     return await todoService.deleteTodo(undefined, { params: { id } })
   } catch (error) {
-    return handleErrorApi(error)
+    throw handleError(error)
   }
 }

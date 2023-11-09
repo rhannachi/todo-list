@@ -3,13 +3,13 @@ import { createUserThunk, fetchUsersThunk } from './user.thunk'
 import { UserType } from './user.type'
 import { ErrorType } from '../../helper'
 
-type TodosState = {
+type UsersState = {
   status: 'loading' | 'finished'
   error: ErrorType | undefined
   list: UserType[]
 }
 
-const initialState: TodosState = {
+const initialState: UsersState = {
   list: [],
   error: undefined,
   status: 'finished',
@@ -59,7 +59,7 @@ export const userSlice = createSlice({
       }
     })
     builder.addCase(createUserThunk.fulfilled, (state, { payload }) => {
-      const newState: TodosState = {
+      const newState: UsersState = {
         ...state,
         status: 'finished',
       }

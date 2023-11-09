@@ -1,11 +1,11 @@
-import { TodoListProps } from '../components'
-import { UserType } from '../store/user/user.type'
-import { TodoInfoType } from '../store/todo/todo.type'
+import { TodoInfoListProps } from '../components'
+import { UserType } from '../store/user'
+import { TodoInfoType } from '../store/todoInfo'
 
-export const todoListPropsMapper = (
+export const todoInfoListPropsMapper = (
   todos: TodoInfoType[],
   users: UserType[],
-): TodoListProps['todoList'] => {
+): TodoInfoListProps['todoInfoList'] => {
   return todos.map((todo) => ({
     id: todo.id,
     name: todo.name,

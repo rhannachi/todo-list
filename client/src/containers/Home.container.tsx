@@ -1,30 +1,36 @@
 import React, { useEffect } from 'react'
-import { todoSelector, useAppDispatch, useAppSelector, userSelector } from '../store'
+import { todoInfoSelector, useAppDispatch, useAppSelector, userSelector } from '../store'
 import {
-  addTodoThunk,
-  AddTodoThunkPayloadType,
-  deleteTodoThunk,
-  DeleteTodoThunkPayloadType,
-  fetchTodosThunk,
-} from '../store/todo'
+  addTodoInfoThunk,
+  AddTodoInfoThunkPayloadType,
+  deleteTodoInfoThunk,
+  DeleteTodoInfoThunkPayloadType,
+  fetchTodoInfosThunk,
+} from '../store/todoInfo'
 import { fetchUsersThunk } from '../store/user'
-import { AddTodo, TodoList, UserList } from '../components'
-import { todoListPropsMapper } from './home.mapper'
+import { AddTodoInfo, TodoInfoList, UserList } from '../components'
+import { todoInfoListPropsMapper } from './home.mapper'
 
 export const HomeContainer: React.FC = () => {
-  const todos = useAppSelector(todoSelector)
+  const todoInfos = useAppSelector(todoInfoSelector)
   const users = useAppSelector(userSelector)
 
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    dispatch(fetchTodosThunk())
+    dispatch(fetchTodoInfosThunk())
     dispatch(fetchUsersThunk())
   }, [])
 
-  const handleSaveTodo = ({ email, user, description, label, name }: AddTodoThunkPayloadType) => {
+  const handleAddTodoInfo = ({
+    email,
+    user,
+    description,
+    label,
+    name,
+  }: AddTodoInfoThunkPayloadType) => {
     dispatch(
-      addTodoThunk({
+      addTodoInfoThunk({
         email,
         user,
         description,
@@ -34,25 +40,25 @@ export const HomeContainer: React.FC = () => {
     )
   }
 
-  const handleDeleteTodo = ({ idTodo, idInfo }: DeleteTodoThunkPayloadType) => {
+  const handleDeleteTodoInfo = ({ idTodo, idInfo }: DeleteTodoInfoThunkPayloadType) => {
     dispatch(
-      deleteTodoThunk({
+      deleteTodoInfoThunk({
         idTodo,
         idInfo,
       }),
     )
   }
 
-  const todoList = todoListPropsMapper(todos.list, users.list)
+  const todoInfoList = todoInfoListPropsMapper(todoInfos.list, users.list)
 
   return (
     <main className='App'>
       <h1>TODO list</h1>
       <div className='container'>
-        <AddTodo saveTodo={handleSaveTodo} />
+        <AddTodoInfo addTodoInfo={handleAddTodoInfo} />
         <UserList userList={users.list} />
       </div>
-      <TodoList deleteTodo={handleDeleteTodo} todoList={todoList} />
+      <TodoInfoList deleteTodoInfo={handleDeleteTodoInfo} todoInfoList={todoInfoList} />
     </main>
   )
 }

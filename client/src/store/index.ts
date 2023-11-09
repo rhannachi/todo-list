@@ -1,16 +1,14 @@
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
 import { AnyAction, combineReducers, configureStore } from '@reduxjs/toolkit'
-import { todoSlice } from './todo'
+import { todoInfoSlice } from './todoInfo'
 import { userSlice } from './user'
 
 const combinedReducer = combineReducers({
-  [todoSlice.name]: todoSlice.reducer,
+  [todoInfoSlice.name]: todoInfoSlice.reducer,
   [userSlice.name]: userSlice.reducer,
 })
 
-const reducer = (state: StateType | undefined, action: AnyAction) => {
-  return combinedReducer(state, action)
-}
+const reducer = (state: StateType | undefined, action: AnyAction) => combinedReducer(state, action)
 
 type StateType = ReturnType<typeof combinedReducer>
 
@@ -22,5 +20,5 @@ type RootState = ReturnType<typeof store.getState>
 export const useAppDispatch = () => useDispatch<AppDispatch>()
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector
 
-export const todoSelector = (state: RootState) => state.todo
+export const todoInfoSelector = (state: RootState) => state.todoInfo
 export const userSelector = (state: RootState) => state.user

@@ -1,5 +1,5 @@
 import React from 'react'
-import { UserType } from '../store/user/user.type'
+import { UserType } from '../store/user'
 
 type UserListProps = {
   userList: UserType[]

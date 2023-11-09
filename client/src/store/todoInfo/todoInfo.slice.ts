@@ -1,41 +1,41 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { addTodoThunk, deleteTodoThunk, fetchTodosThunk } from './todo.thunk'
-import { TodoInfoType } from './todo.type'
+import { addTodoInfoThunk, deleteTodoInfoThunk, fetchTodoInfosThunk } from './todoInfo.thunk'
+import { TodoInfoType } from './todoInfo.type'
 import { ErrorType } from '../../helper'
 
-type TodosState = {
+type TodoInfosState = {
   status: 'loading' | 'finished'
   error: ErrorType | undefined
   list: TodoInfoType[]
 }
 
-const initialState: TodosState = {
+const initialState: TodoInfosState = {
   list: [],
   error: undefined,
   status: 'finished',
 }
 
-export const todoSlice = createSlice({
-  name: 'todo',
+export const todoInfoSlice = createSlice({
+  name: 'todoInfo',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    /** Fetch TODOS **/
-    builder.addCase(fetchTodosThunk.pending, (state) => {
+    /** FetchTodoInfo **/
+    builder.addCase(fetchTodoInfosThunk.pending, (state) => {
       return {
         ...state,
         status: 'loading',
         error: undefined,
       }
     })
-    builder.addCase(fetchTodosThunk.fulfilled, (state, { payload }) => {
+    builder.addCase(fetchTodoInfosThunk.fulfilled, (state, { payload }) => {
       return {
         ...state,
         status: 'finished',
         list: payload,
       }
     })
-    builder.addCase(fetchTodosThunk.rejected, (state, { payload }) => {
+    builder.addCase(fetchTodoInfosThunk.rejected, (state, { payload }) => {
       let newState = { ...state }
       if (payload) {
         newState = {
@@ -48,22 +48,22 @@ export const todoSlice = createSlice({
         status: 'finished',
       }
     })
-    /** ADD TODO **/
-    builder.addCase(addTodoThunk.pending, (state) => {
+    /** AadTodoInfo **/
+    builder.addCase(addTodoInfoThunk.pending, (state) => {
       return {
         ...state,
         status: 'loading',
         error: undefined,
       }
     })
-    builder.addCase(addTodoThunk.fulfilled, (state, { payload }) => {
+    builder.addCase(addTodoInfoThunk.fulfilled, (state, { payload }) => {
       return {
         ...state,
         status: 'finished',
         list: [...state.list, payload],
       }
     })
-    builder.addCase(addTodoThunk.rejected, (state, { payload }) => {
+    builder.addCase(addTodoInfoThunk.rejected, (state, { payload }) => {
       let newState = { ...state }
       if (payload) {
         newState = {
@@ -76,22 +76,22 @@ export const todoSlice = createSlice({
         status: 'finished',
       }
     })
-    /** Delete TODO **/
-    builder.addCase(deleteTodoThunk.pending, (state) => {
+    /** DeleteTodoInfo **/
+    builder.addCase(deleteTodoInfoThunk.pending, (state) => {
       return {
         ...state,
         status: 'loading',
         error: undefined,
       }
     })
-    builder.addCase(deleteTodoThunk.fulfilled, (state, { payload }) => {
+    builder.addCase(deleteTodoInfoThunk.fulfilled, (state, { payload }) => {
       return {
         ...state,
         status: 'finished',
         list: [...state.list].filter((todo) => todo.id !== payload.id),
       }
     })
-    builder.addCase(deleteTodoThunk.rejected, (state, { payload }) => {
+    builder.addCase(deleteTodoInfoThunk.rejected, (state, { payload }) => {
       let newState = { ...state }
       if (payload) {
         newState = {

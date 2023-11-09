@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import { clearEmpties } from './helper'
-import { AddTodoThunkPayloadType } from '../store/todo'
+import { AddTodoInfoThunkPayloadType } from '../store/todoInfo'
 
-type FormDataType = AddTodoThunkPayloadType
+type FormDataType = AddTodoInfoThunkPayloadType
 
-type AddTodoProps = {
-  saveTodo: (data: AddTodoThunkPayloadType) => void
+type AddTodoInfoProps = {
+  addTodoInfo: (data: AddTodoInfoThunkPayloadType) => void
 }
 
 const validateForm = (form?: Partial<FormDataType>) => {
@@ -19,7 +19,7 @@ const validateForm = (form?: Partial<FormDataType>) => {
   )
 }
 
-export const AddTodo: React.FC<AddTodoProps> = ({ saveTodo }) => {
+export const AddTodoInfo: React.FC<AddTodoInfoProps> = ({ addTodoInfo }) => {
   const [formData, setFormData] = useState<Partial<FormDataType> | undefined>()
 
   const handleForm = (e: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
@@ -40,7 +40,7 @@ export const AddTodo: React.FC<AddTodoProps> = ({ saveTodo }) => {
       formData['label'] &&
       formData['description']
     ) {
-      saveTodo({
+      addTodoInfo({
         name: formData.name,
         label: formData.label,
         description: formData.description,

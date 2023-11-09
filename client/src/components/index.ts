@@ -1,3 +1,3 @@
-export * from './AddTodo'
-export * from './TodoList'
+export * from './AddTodoInfo'
+export * from './TodoInfoList'
 export * from './UserList'

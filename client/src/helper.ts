@@ -18,37 +18,36 @@ type ErrorApiType = {
     message: string
   }
 }
-export type ErrorType = {
-  error: {
-    message: string
-    stack?: string
+
+export class ErrorType {
+  message: string
+  stack?: string
+  constructor({ message, stack }: ErrorType) {
+    this.message = message
+    this.stack = stack
   }
 }
-export type RejectType = {
-  rejectValue: ErrorType
-}
+export const handleError = (error: unknown): ErrorType => {
+  const e = new ErrorType({
+    message: 'Internal Error',
+    stack: `${error}`,
+  })
 
-export const handleErrorApi = (error: unknown) => {
-  // console.log('ZodiosError ==>', error instanceof ZodiosError)
-  // console.log('ZodError ==>', error instanceof ZodError)
-  // console.log('AxiosError ==>', error instanceof AxiosError)
-  // console.log('error ==>', error)
-
-  let message = 'Internal Error'
-  const stack = `${error}`
+  if (error instanceof ErrorType) {
+    // console.info('ErrorType ==>', error)
+    return error
+  }
 
   if (isAxiosError<ErrorApiType>(error) && error.response) {
-    message = error.response.data.error.message
+    e.message = error.response.data.error.message
+    // console.info('AxiosError ==>', error)
   }
   if (error instanceof ZodiosError) {
     if (error.cause instanceof ZodError) {
-      message = fromZodError(error.cause).toString()
+      e.message = fromZodError(error.cause).toString()
     }
+    // console.info('ZodiosError ==>', error)
   }
-  return {
-    error: {
-      message,
-      stack,
-    },
-  }
+
+  return e
 }
