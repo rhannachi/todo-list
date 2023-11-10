@@ -33,6 +33,7 @@ export const AddTodoInfo: React.FC<AddTodoInfoProps> = ({ addTodoInfo }) => {
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     if (
+      // TODO add zod !!!!
       formData &&
       formData['name'] &&
       formData['email'] &&

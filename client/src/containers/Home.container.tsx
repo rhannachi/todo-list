@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { todoInfoSelector, useAppDispatch, useAppSelector, userSelector } from '../store'
 import {
   addTodoInfoThunk,
@@ -10,8 +10,9 @@ import {
 import { fetchUsersThunk } from '../store/user'
 import { AddTodoInfo, TodoInfoList, UserList } from '../components'
 import { todoInfoListPropsMapper } from './home.mapper'
+import { withToasts } from './Toast.hoc'
 
-export const HomeContainer: React.FC = () => {
+const HomeContainer = () => {
   const todoInfos = useAppSelector(todoInfoSelector)
   const users = useAppSelector(userSelector)
 
@@ -52,13 +53,15 @@ export const HomeContainer: React.FC = () => {
   const todoInfoList = todoInfoListPropsMapper(todoInfos.list, users.list)
 
   return (
-    <main className='App'>
+    <>
       <h1>TODO list</h1>
       <div className='container'>
         <AddTodoInfo addTodoInfo={handleAddTodoInfo} />
         <UserList userList={users.list} />
       </div>
       <TodoInfoList deleteTodoInfo={handleDeleteTodoInfo} todoInfoList={todoInfoList} />
-    </main>
+    </>
   )
 }
+
+export const HomeContainerToast = () => withToasts(HomeContainer)

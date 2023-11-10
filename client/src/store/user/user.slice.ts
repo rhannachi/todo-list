@@ -5,7 +5,7 @@ import { ErrorType } from '../../helper'
 
 type UsersState = {
   status: 'loading' | 'finished'
-  error: ErrorType | undefined
+  error?: ErrorType
   list: UserType[]
 }
 

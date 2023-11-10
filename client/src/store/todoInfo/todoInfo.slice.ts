@@ -5,13 +5,12 @@ import { ErrorType } from '../../helper'
 
 type TodoInfosState = {
   status: 'loading' | 'finished'
-  error: ErrorType | undefined
+  error?: ErrorType
   list: TodoInfoType[]
 }
 
 const initialState: TodoInfosState = {
   list: [],
-  error: undefined,
   status: 'finished',
 }
 
@@ -57,11 +56,8 @@ export const todoInfoSlice = createSlice({
       }
     })
     builder.addCase(addTodoInfoThunk.fulfilled, (state, { payload }) => {
-      return {
-        ...state,
-        status: 'finished',
-        list: [...state.list, payload],
-      }
+      state.status = 'finished'
+      state.list.push(payload)
     })
     builder.addCase(addTodoInfoThunk.rejected, (state, { payload }) => {
       let newState = { ...state }

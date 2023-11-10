@@ -11,6 +11,7 @@ import { todoInfoMapper } from './todoInfo.transform'
 import { createUserThunk } from '../user'
 import { ErrorType, handleError, ToObjectType } from '../../helper'
 import { InfoType, TodoInfoType } from './todoInfo.type'
+import { addNotifyAction } from '../notify'
 
 /**
  * FetchTodos API
@@ -97,7 +98,17 @@ export const addTodoInfoThunk = createAsyncThunk<
     }
     const infoResponse = await addInfoApi(addInfoApiPayload)
 
-    return todoInfoMapper(todoResponse, infoResponse)
+    const todoInfo = todoInfoMapper(todoResponse, infoResponse)
+
+    thunkApi.dispatch(
+      addNotifyAction({
+        type: 'success',
+        description: 'Le Todo a été ajouté avec succès',
+        title: 'Yes !',
+        delay: 3000,
+      }),
+    )
+    return todoInfo
   } catch (e) {
     const error = handleError(e)
     throw thunkApi.rejectWithValue(error)
@@ -120,9 +131,16 @@ export const deleteTodoInfoThunk = createAsyncThunk<
 >('todoInfo/delete', async ({ idTodo, idInfo }, thunkApi) => {
   try {
     const todoResponse = await deleteTodoApi(idTodo)
-
     await deleteInfoApi(idInfo)
 
+    thunkApi.dispatch(
+      addNotifyAction({
+        type: 'success',
+        description: 'Le Todo a été supprimé avec succès',
+        title: 'Yes !',
+        delay: 3000,
+      }),
+    )
     return { id: todoResponse.id }
   } catch (e) {
     const error = handleError(e)
