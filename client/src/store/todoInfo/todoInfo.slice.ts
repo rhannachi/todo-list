@@ -21,83 +21,47 @@ export const todoInfoSlice = createSlice({
   extraReducers: (builder) => {
     /** FetchTodoInfo **/
     builder.addCase(fetchTodoInfosThunk.pending, (state) => {
-      return {
-        ...state,
-        status: 'loading',
-        error: undefined,
-      }
+      state.status = 'loading'
+      state.error = undefined
     })
     builder.addCase(fetchTodoInfosThunk.fulfilled, (state, { payload }) => {
-      return {
-        ...state,
-        status: 'finished',
-        list: payload,
-      }
+      state.status = 'finished'
+      state.list = payload
     })
     builder.addCase(fetchTodoInfosThunk.rejected, (state, { payload }) => {
-      let newState = { ...state }
+      state.status = 'finished'
       if (payload) {
-        newState = {
-          ...newState,
-          error: { ...payload },
-        }
-      }
-      return {
-        ...newState,
-        status: 'finished',
+        state.error = payload
       }
     })
     /** AadTodoInfo **/
     builder.addCase(addTodoInfoThunk.pending, (state) => {
-      return {
-        ...state,
-        status: 'loading',
-        error: undefined,
-      }
+      state.status = 'loading'
+      state.error = undefined
     })
     builder.addCase(addTodoInfoThunk.fulfilled, (state, { payload }) => {
       state.status = 'finished'
       state.list.push(payload)
     })
     builder.addCase(addTodoInfoThunk.rejected, (state, { payload }) => {
-      let newState = { ...state }
+      state.status = 'finished'
       if (payload) {
-        newState = {
-          ...newState,
-          error: { ...payload },
-        }
-      }
-      return {
-        ...newState,
-        status: 'finished',
+        state.error = payload
       }
     })
     /** DeleteTodoInfo **/
     builder.addCase(deleteTodoInfoThunk.pending, (state) => {
-      return {
-        ...state,
-        status: 'loading',
-        error: undefined,
-      }
+      state.status = 'loading'
+      state.error = undefined
     })
     builder.addCase(deleteTodoInfoThunk.fulfilled, (state, { payload }) => {
-      return {
-        ...state,
-        status: 'finished',
-        list: [...state.list].filter((todo) => todo.id !== payload.id),
-      }
+      state.status = 'finished'
+      state.list = state.list.filter((todo) => todo.id !== payload.id)
     })
     builder.addCase(deleteTodoInfoThunk.rejected, (state, { payload }) => {
-      let newState = { ...state }
+      state.status = 'finished'
       if (payload) {
-        newState = {
-          ...newState,
-          error: { ...payload },
-        }
-      }
-      return {
-        ...newState,
-        status: 'finished',
+        state.error = payload
       }
     })
   },

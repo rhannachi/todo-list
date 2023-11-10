@@ -22,72 +22,34 @@ export const userSlice = createSlice({
   extraReducers: (builder) => {
     /** FETCH Users **/
     builder.addCase(fetchUsersThunk.pending, (state) => {
-      return {
-        ...state,
-        status: 'loading',
-        error: undefined,
-      }
+      state.status = 'loading'
+      state.error = undefined
     })
     builder.addCase(fetchUsersThunk.fulfilled, (state, { payload }) => {
-      return {
-        ...state,
-        status: 'finished',
-        list: payload,
-      }
+      state.status = 'finished'
+      state.list = payload
     })
     builder.addCase(fetchUsersThunk.rejected, (state, { payload }) => {
-      let newState = { ...state }
+      state.status = 'finished'
       if (payload) {
-        newState = {
-          ...newState,
-          error: {
-            ...payload,
-          },
-        }
-      }
-      return {
-        ...newState,
-        status: 'finished',
+        state.error = payload
       }
     })
     /** ADD User **/
     builder.addCase(createUserThunk.pending, (state) => {
-      return {
-        ...state,
-        status: 'loading',
-        error: undefined,
-      }
+      state.status = 'loading'
+      state.error = undefined
     })
     builder.addCase(createUserThunk.fulfilled, (state, { payload }) => {
-      const newState: UsersState = {
-        ...state,
-        status: 'finished',
-      }
-
-      const exist = state.list.find((user) => user.email === payload.email)
-
-      if (!exist) {
-        return {
-          ...newState,
-          list: [...state.list, payload],
-        }
-      }
-      return {
-        ...newState,
-        list: [...state.list],
+      state.status = 'finished'
+      if (!state.list.find((user) => user.email === payload.email)) {
+        state.list = state.list.concat(payload)
       }
     })
     builder.addCase(createUserThunk.rejected, (state, { payload }) => {
-      let newState = { ...state }
+      state.status = 'finished'
       if (payload) {
-        newState = {
-          ...newState,
-          error: { ...payload },
-        }
-      }
-      return {
-        ...newState,
-        status: 'finished',
+        state.error = payload
       }
     })
   },
