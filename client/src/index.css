@@ -145,3 +145,18 @@ body {
     justify-content: center;
     margin-top: 30px;
 }
+
+.container-toast {
+    width: 300px;
+    position: fixed;
+    margin: 30px;
+    right: 0;
+    top: 0;
+}
+
+.toast {
+    margin-top: 15px;
+    padding: 10px;
+    color: white;
+    cursor: pointer;
+}

@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid'
 
 export type NotifyType = {
   id: string
-  delay: number
+  delay?: number
   type: 'info' | 'success' | 'error'
   title: string
   description: string

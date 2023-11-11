@@ -45,6 +45,13 @@ export const fetchTodoInfosThunk = createAsyncThunk<
     }, [])
   } catch (e) {
     const error = handleError(e)
+    thunkApi.dispatch(
+      addNotifyAction({
+        type: 'error',
+        description: 'Impossible de récupérer la liste des Todos',
+        title: 'Error 🙁 !',
+      }),
+    )
     throw thunkApi.rejectWithValue(error)
   }
 })
@@ -77,8 +84,7 @@ export const addTodoInfoThunk = createAsyncThunk<
 
     if (!userResponse.payload) {
       throw new ErrorType({
-        // TODO improvement message and stack
-        message: 'Error add user',
+        message: 'Impossible d`ajouter l`utilisateur',
         stack: 'Error add user',
       })
     }
@@ -111,6 +117,13 @@ export const addTodoInfoThunk = createAsyncThunk<
     return todoInfo
   } catch (e) {
     const error = handleError(e)
+    thunkApi.dispatch(
+      addNotifyAction({
+        type: 'error',
+        description: `${error.message}`,
+        title: 'Error 🙁 !',
+      }),
+    )
     throw thunkApi.rejectWithValue(error)
   }
 })
@@ -144,6 +157,13 @@ export const deleteTodoInfoThunk = createAsyncThunk<
     return { id: todoResponse.id }
   } catch (e) {
     const error = handleError(e)
+    thunkApi.dispatch(
+      addNotifyAction({
+        type: 'error',
+        description: `${error.message}`,
+        title: 'Error 🙁 !',
+      }),
+    )
     return thunkApi.rejectWithValue(error)
   }
 })
